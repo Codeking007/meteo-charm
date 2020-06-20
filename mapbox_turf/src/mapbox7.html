@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title> [Mapbox GL]从一个GeoJSON资源添加多个几何图形</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.28.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>                    <!-- div容器 -->
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZXhhbXBsZXMiLCJhIjoiY2lqbmpqazdlMDBsdnRva284cWd3bm11byJ9.V6Hg2oYJwMAxeoR9GEzkAA';
+    var map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/outdoors-v9",
+        center: [-121.403732, 40.492392],
+        zoom: 10
+    });
+
+    map.on("load", function() {
+        map.addSource("national-park", {
+            "type": "geojson",           /* geojson类型资源 */
+            "data": {                    /* geojson数据 */
+                "type": "FeatureCollection",
+                "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": [
+                            [
+                                [-121.353637, 40.584978],
+                                [-121.284551, 40.584758],
+                                [-121.275349, 40.541646],
+                                [-121.246768, 40.541017],
+                                [-121.251343, 40.423383],
+                                [-121.326870, 40.423768],
+                                [-121.360619, 40.434790],
+                                [-121.363694, 40.409124],
+                                [-121.439713, 40.409197],
+                                [-121.439711, 40.423791],
+                                [-121.572133, 40.423548],
+                                [-121.577415, 40.550766],
+                                [-121.539486, 40.558107],
+                                [-121.520284, 40.572459],
+                                [-121.487219, 40.550822],
+                                [-121.446951, 40.563190],
+                                [-121.370644, 40.563267],
+                                [-121.353637, 40.584978]
+                            ]
+                        ]
+                    }
+                }, {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-121.415061, 40.506229]
+                    }
+                }, {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-121.505184, 40.488084]
+                    }
+                }, {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-121.354465, 40.488737]
+                    }
+                }]
+            }
+        });
+
+        map.addLayer({
+            "id": "park-boundary",
+            "type": "fill",           /* fill类型一般用来表示一个面，一般较大 */
+            "source": "national-park",
+            "paint": {
+                "fill-color": "#888888", /* 填充的颜色 */
+                "fill-opacity": 0.4      /* 透明度 */
+            },
+            "filter": ["==", "$type", "Polygon"]  /* filter过滤器将type等于<span style="font-family: Arial, Helvetica, sans-serif;">Polygon的数据显示在layer上</span><span style="font-family: Arial, Helvetica, sans-serif;"> </span>*/
+        });
+
+        map.addLayer({
+            "id": "park-volcanoes",
+            "type": "circle",          /* circle类型表示一个圆，一般比较小 */
+            "source": "national-park",
+            "paint": {
+                "circle-radius": 6,        /* 圆的直径，单位像素 */
+                "circle-color": "#B42222"  /* 圆的颜色 */
+            },
+            "filter": ["==", "$type", "Point"], /* filter过滤器将type等于Point的数据显示在layer上 */
+        });
+    });
+</script>
+
+</body>
+</html>

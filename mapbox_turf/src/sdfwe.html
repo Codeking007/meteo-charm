@@ -1,0 +1,33 @@
+$.ajax({
+type : "post",
+dataType : "json",
+url: 'vo_orders/findOrderGantt'
+}).done(function(data1){
+console.log(data1);
+dateOrigin1=dateOrigin;
+for(var i=0;i<data1.length;i++){
+date=dateOrigin1;
+$("#calendarDIY table").append("<tr ordersId='"+data1[i].ordersId+"' onclick=\"doload('"+data1[i].serviceNum+"')\"></tr>");   /*第(4+i)行,tr:eq(4+i-1)行*/
+$("#calendarDIY table tr:eq("+(4+i-1)+")").append("<td class='calendarDIYBorderColor'>"+data1[i].shipNmEn+"</td>");
+$("#calendarDIY table tr:eq("+(4+i-1)+")").append("<td class='calendarDIYBorderColor'>"+data1[i].serviceNum+"</td>");
+
+
+for(var y=0;y<monthDayDiff(dateOrigin, today);y++){
+var colspanDays=0;
+if(y==0){
+colspanDays=(days_per_month[date.getMonth()]-date.getDate()+1);
+}else if(y==monthDayDiff(dateOrigin, today)-1){
+colspanDays=(today.getDate());
+}else{
+colspanDays=(days_per_month[date.getMonth()]);
+}
+for(var j=0;j<colspanDays;j++){
+$("#calendarDIY table tr:eq("+(4+i-1)+")").append("<td day='"+date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate()+"' class='calendarDIYBorderColor'></td>");
+date.setDate(date.getDate()+1);     //往后每次加一天
+}
+}
+
+}
+$("#calendarDIY").append("<br/><br/><br/><br/><br/><br/>");
+loadServiceButton();
+});

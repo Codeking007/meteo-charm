@@ -1,0 +1,99 @@
+<html>
+<head>
+    <title>title</title>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body .map {
+            display: flex;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .btn-control1 {
+            font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            background-color: #a71fc0;
+            color: #fff;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            border: none;
+            width: 200px;
+            margin-left:-100px;
+            display: block;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 3px;
+        }
+
+        .btn-control1:hover {
+            background-color: #4ea0da;
+        }
+    </style>
+<body>
+<div id ="map" class="map"></div>
+<button id='saveto' class='btn-control1'>change</button>
+</body>
+<script>
+    var x=0;
+    let options = {};
+    options.container = "map";
+    options.attributionControl = false
+    options.center = [121.6, 38.9];
+    //options.center = [0, 0];
+    options.zoom = 0;
+    options.minZoom = 0;
+    options.maxZoom = 18;
+    options.style = {
+        "version": 8,
+        "sources": {
+            "defTiles": {
+                "type": "raster",
+                //
+                //'tiles': ["http://116.62.5.16:8080/geoserver/gwc/service/wmts?Format=image%2Fpng&style&tilematrixset=uGrid&Request=GetTile&layer=Unimet%3AUniMap&TileMatrix=uGrid%3A{z}&TileCol={x}&TileRow={y}"],
+                'tiles': ["http://116.62.5.16:8080/geoserver/gwc/service/wmts?layer=Unimet%3Agadm28_adm0&style&tilematrixset=EPSG%3A900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fpng&TileMatrix=EPSG%3A900913%3A{z}&TileCol={x}&TileRow={y}"],
+                //'tiles': ["http://116.62.5.16:8080/geoserver/gwc/service/tms/1.0.0/Unimet:UniMap@uGrid@png/{z}/{y}/{x}.png"],
+                // 'tiles': ["http://47.97.193.234:8087/geoserver/gwc/service/wmts?layer=sea%3Asea&style=&tilematrixset=EPSG%3A900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fpng&TileMatrix=EPSG%3A900913%3A{z}&TileCol={x}&TileRow={y}"],
+
+                'tileSize': 256
+            },
+            "defTiles1": {
+                "type": "raster",
+                'tiles': ["http://mt0.google.cn/vt/v=w2.114&hl=zh-CN&gl=cn&x={x}&y={y}&z={z}"],
+                'tileSize': 256
+            }
+        },
+        "layers": [{
+            "id": "background",
+            "type": "background",
+            "paint": {
+                "background-color": "#41afa5"
+            }
+        },{
+            "id": "unimet",
+            "type": "raster",
+            "source": "defTiles"
+        }
+        ]
+    }
+    var map = new mapboxgl.Map(options);
+    $("#saveto").click(function(){
+        if(x==0){
+            map.getLayer('unimet').source="defTiles1";
+            map.setLayoutProperty('unimet', 'visibility', 'visible');
+            x=1;
+        }else{
+            map.getLayer('unimet').source="defTiles";
+            map.setLayoutProperty('unimet', 'visibility', 'visible');
+            x=0;
+        }
+
+    });
+</script>
+</head>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>[Mapbox GL]调整LineString使其适应地图边界</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://cdn.bootcss.com/Turf.js/4.5.2/turf.js' charset='utf-8'></script>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<style>
+    .btn-control {
+        font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        background-color: #3386c0;
+        color: #fff;
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        z-index: 1;
+        border: none;
+        width: 200px;
+        margin-left:-100px;
+        display: block;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 3px;
+    }
+
+    .btn-control:hover {
+        background-color: #4ea0da;
+    }
+</style>
+<div id='map'></div>
+<button id='zoomto' class='btn-control'>Zoom to bounds</button>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaGZiNTY0IiwiYSI6ImNqN2I3NnplMTBwb2IzMnJzcWh0OWp6YTQifQ.TM_EQumke3MvFzemeZE48g';
+        // A GeoJSON object with a LineString route from the White House to Capitol Hill
+        var geojson = {
+            "type": "FeatureCollection",
+            "features": [{
+                "type": "Feature",
+                "geometry": {
+                    "type": "LineString",   /* LineString类型的形状 */
+                    "properties": {},
+                    "coordinates": [
+                        [-100, 0],
+                        [-50, 20],
+                        [0, 40],
+                        [50, 60],
+                        [0, 30]
+                    ]
+                }
+            }]
+        };
+
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/light-v9',
+            center: [-77.0214, 38.8970],
+            zoom: 1
+        });
+
+        map.on('load', function() {
+            // Add a GeoJSON source containing place coordinates and information.
+            map.addSource("LineString", {
+                "type": "geojson",
+                "data": geojson
+            });
+
+            map.addLayer({
+                "id": "LineString",
+                "type": "line",
+                "source": "LineString",
+                "layout": {
+                    "line-join": "round",   /* 线条相交处的样式 */
+                    "line-cap": "round"     /* 线条末端的样式 */
+                },
+                "paint": {
+                    "line-color": "#BF93E4", /* 线条颜色 */
+                    "line-width": 5          /* 线条宽度 */
+                }
+            });
+
+            document.getElementById('zoomto').addEventListener('click', function() { /* 为zoomto元素添加click事件 */
+
+                // Geographic coordinates of the LineString
+                var coordinates = geojson.features[0].geometry.coordinates;
+
+                // Pass the first coordinates in the LineString to `lngLatBounds` &
+                // wrap each coordinate pair in `extend` to include them in the bounds
+                // result. A variation of this technique could be applied to zooming
+                // to the bounds of multiple Points or Polygon geomteries - it just
+                // requires wrapping all the coordinates with the extend method.
+                var bounds = coordinates.reduce(function(bounds, coord) {
+/* reduce语法：array1.reduce(callbackfn[, initialValue])  callbackfn语法：function callbackfn(previousValue, currentValue, currentIndex, array1)，这里整个语句的含义是以坐标0为初始值，边界逐渐扩展边界到最后一个坐标 */
+                    return bounds.extend(coord);   /* extend  (obj):包含给定的经纬度或者经纬度边界来扩展区域边界 */
+                }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0])); /*new LngLatBounds(sw: [LngLatLike], ne: [LngLatLike]):创建LngLatBounds的构造器，LngLatBounds对象表示一个地理上有界限的区域，使用西南和东北的点的经纬坐标表示  */
+
+                map.fitBounds(bounds, {  /*fitBounds(bounds,[options],[eventData])：移动缩放地图来将某个可视化区域包含在指定的地理边界内部，最终也会使用最高的zoomlevel来显示可视化区域试图  */
+                    padding: 20
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

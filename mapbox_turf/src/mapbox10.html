@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.29.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.29.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGZiNTY0IiwiYSI6ImNqN2I3NnplMTBwb2IzMnJzcWh0OWp6YTQifQ.TM_EQumke3MvFzemeZE48g';
+    var map = new mapboxgl.Map({         /* 创建地图 */
+        container: 'map',
+        style: 'mapbox://styles/mapbox/satellite-v9',   /* 卫星图 */
+        center: [-74.50, 40],            /* 视图中心 */
+        zoom: 3
+    });
+
+    var direction = 0, manual = false, speed = 1;
+
+    // create a GeoJSON point to serve as a starting point
+    var point = {
+        "type": "Point",
+        "coordinates": [-74.50, 40]
+    };
+
+    function setPosition() {
+        point.coordinates[0] += speed * Math.sin(direction) / 100;   /* 计算地图坐标 */
+        point.coordinates[1] += speed * Math.cos(direction) / 100;
+        map.getSource('drone').setData(point);         /* getSource(id)：获取对应id的source；setData(data)：设置GeoJSON数据并重新渲染地图 */
+
+        map.setLayoutProperty('drone', 'icon-rotate', direction * (180 / Math.PI)); /* setLayoutProperty(layer,name,value)：设置id为layer的样式层属性为name的属性值, 属性icon-rotate表示顺时针方向旋转，单位是度*/
+
+        if (!manual && Math.random() > 0.95) {
+            direction += (Math.random() - 0.5) / 2;      /* 随机设置图标方向 */
+        }
+
+        map.setCenter(point.coordinates);    /* setCenter()设置地图的中心 */
+    }
+
+    map.on('load', function () {    /* 添加load事件监听器 */
+        // add the GeoJSON above to a new vector tile source
+        map.addSource('drone', { type: 'geojson', data: point }); /* 初始化id为drone的资源，geojson类型 */
+        map.addLayer({
+            "id": "drone-glow-strong",
+            "type": "circle",
+            "source": "drone",
+            "paint": {
+                "circle-radius": 18,         /* circle半径 */
+                "circle-color": "#fff",      /* circle颜色 */
+                "circle-opacity": 0.4        /* circle透明度 */
+            }
+        });
+
+        map.addLayer({
+            "id": "drone-glow",
+            "type": "circle",
+            "source": "drone",
+            "paint": {
+                "circle-radius": 40,
+                "circle-color": "#fff",
+                "circle-opacity": 0.1
+            }
+        });
+
+        map.addLayer({
+            "id": "drone",
+            "type": "symbol",
+            "source": "drone",
+            "layout": {
+                "icon-image": "airport-15"  /* 设置图标 */
+            }
+        });
+
+        window.setInterval(setPosition, 10); /* 周期的调用setPosition函数，周期是10毫秒 */
+    });
+
+    // Add manual control of the airplane with left and right arrow keys, just because
+    document.body.addEventListener('keydown', function (e) {  /* addEventListener(type,callback) 为DOM添加事件监听器 */
+        if (e.which === 37) { // left    /* left或者right改变移动方向 */
+            direction -= 0.1;
+            manual = true;
+        }
+        if (e.which === 39) { // right
+            direction += 0.1;
+            manual = true;
+        }
+        if (e.which === 38) { // faster   /* 上下箭头改变移动速度 */
+            speed = Math.min(speed + 0.1, 10); /* Math.min(a,b)返回两个值中较小的 */
+            manual = true;
+            e.preventDefault();
+        }
+        if (e.which === 40) { // slower
+            speed = Math.max(speed - 0.1, 0); /* Math.max(a,b)返回两个值中较大的 */
+            manual = true;
+            e.preventDefault();   /* preventDefault():该方法将通知 Web 浏览器不要执行与事件关联的默认动作 */
+        }
+    }, true);
+</script>
+
+</body>
+</html>

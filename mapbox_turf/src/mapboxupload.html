@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Basic FileDrop example</title>
+    <meta charset='utf-8' />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://oss.sheetjs.com/js-xlsx/xlsx.full.min.js"></script>
+    <style type="text/css">
+
+    </style>
+</head>
+<body>
+<label class="ui_button ui_button_primary btn-control2" for="xFile">上传文件</label>
+<form><input type="file" id="xFile" name="file1" style="position:absolute;clip:rect(0 0 0 0);"></form>
+
+<script type="text/javascript">
+    $("#xFile").on("change",function(e){
+        readfls(e)
+    })
+    //导入
+    var ImportFile = null;
+    var wb; //读取完成的数据　
+    function file2Xce(f) {
+        return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var data = e.target.result;
+                if (app.rABS) {
+                    wb = XLSX.read(btoa(fixdata(data)), { //手动转化
+                        type: 'base64'
+                    });
+                } else {
+                    wb = XLSX.read(data, {
+                        type: 'binary'
+                    });
+                }
+                resolve(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+            };
+            if (app.rABS) {
+                reader.readAsArrayBuffer(f);
+            } else {
+                reader.readAsBinaryString(f);
+            }
+        });
+    };
+
+    function fixdata(data) { //文件流转BinaryString
+        var o = "",
+            l = 0,
+            w = 10240;
+        for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+        return o;
+    }
+
+
+    var app = new Vue({
+        el: "#app",
+        data: {
+            rABS: false, //是否将文件读取为二进制字符串
+            fileInfo: {
+                name: "",
+                size: 0
+            },
+            tableDemo: {
+                thead: [],
+                tbody: []
+            }
+        }
+    });
+
+    function readfls(e) {
+        var fls=e.currentTarget.files;
+        if (fls && fls.length > 0) {
+            ImportFile = fls[0];
+            var fileX = ImportFile.name.split(".").reverse()[0];
+            var fileXyes = false;
+            ["xlsx", "xlc", "xlm", "xls", "xlt", "xlw", "csv"].forEach(function (value, index, array) {
+                if (fileX === value) {
+                    fileXyes = true;
+                }
+            });
+            if (fileXyes) {
+                app.fileInfo.name = ImportFile.name;
+                app.fileInfo.size = ImportFile.size;
+                file2Xce(ImportFile).then(function (t) {
+                    $("#sizeShow").text(ImportFile.size+"b")
+                    $("#chooseShow").attr('placeholder',ImportFile.name);
+                    console.log("执行完毕");
+                    if (t && t.length > 0) {
+
+
+                        var tmpHead = [];
+                        var pmodel = {};
+                        var aa=[];
+                        var brr =[];
+                        for(var j=0;j<t.length;j++){
+                            var arr=[];
+                            var lon=Number(t[j].Lon);
+                            var lat=Number(t[j].Lat);
+                            var type=Number(t[j].shipType);
+                            var end=t[j].portName;
+                            var sog=Number(t[j].SPD);
+                            var date=Date.parse(new Date(t[j].Time));
+                            var sfoc=Number(t[j].SFOC);
+                            if(lon&&!isNaN(lon)&&lat&&!isNaN(lat)){
+                                arr.push(lon);
+                                arr.push(lat);
+                                arr.push(type);
+                                arr.push(end);
+                                arr.push(sog);
+                                arr.push(date);
+                                arr.push(sfoc);
+                            }
+                            else{
+                                alert("信息填写错误");
+                                return;
+                            }
+                            brr.push(arr);
+                        }
+                        app.tableDemo.thead = tmpHead;
+                        app.tableDemo.tbody = t;
+                    }
+                });
+            } else {
+                alert("格式错误！请重新选择");
+            }
+        }
+    }
+</script>
+</body>
+</html>

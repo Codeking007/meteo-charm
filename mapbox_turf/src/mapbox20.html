@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Style lines using an identity property function.</title>
+    <script src='https://cdn.bootcss.com/Turf.js/4.5.2/turf.js' charset='utf-8'></script>
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet' />
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+    mapboxgl.accessToken ='pk.eyJ1IjoiaGZiNTY0IiwiYSI6ImNqN2I3NnplMTBwb2IzMnJzcWh0OWp6YTQifQ.TM_EQumke3MvFzemeZE48g';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v9',
+        center: [-122.48383155304096, 37.82882682974591],
+        zoom: 16
+    });
+
+    var red = '#F7455D';
+    var blue = '#33C9EB';
+
+    map.on('load', function() {
+        map.addLayer({
+            'id': 'lines',
+            'type': 'line',
+            'source': {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [{
+                        'type': 'Feature',
+                        'properties': {
+                            'color': "#900",
+                        },
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': [
+                                [127, 34],
+                                [127, 22],
+                                [110, 15]
+                            ]
+                        }
+                    }, {
+                        'type': 'Feature',
+                        'properties': {
+                            'color': "#e8c305"
+                        },
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': [
+                                [132, 34],
+                                [132, 22],
+                                [125, 15],
+                                [110, 15]
+                            ]
+                        }
+                    }]
+                }
+            },
+            // The identity function does not take a 'stops' property.
+            // Instead, the property value (in this case, 'color') on the source will be the direct output.
+            'paint': {
+                'line-width': 3,
+                'line-color': {
+                    'type': 'identity',
+                    'property': 'color'
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

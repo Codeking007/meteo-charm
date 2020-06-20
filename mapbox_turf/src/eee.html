@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <style>
+        .calendarDIYBorderColor{
+            border: 1px solid red;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #calendarDIY {
+            /*position: absolute;*/
+            top: 100px;
+            bottom: 0;
+            width: 100%;
+            overflow-x:auto;
+        }
+        .btn-control {
+            font:bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            background-color: #3386c0;
+            color: #fff;
+            position: absolute;
+            top: 20px;
+            left: 40%;
+            border: none;
+            width: 200px;
+            margin-left:-100px;
+            display: block;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 3px;
+        }
+
+        .btn-control:hover {
+            background-color: #4ea0da;
+        }
+    </style>
+</head>
+<body>
+<div id='calendarDIY'></div>
+<button id='filter' class='btn-control' onclick="doCalendarDIY(null,null)">制作日程表</button>
+<button onclick="lastYearCalendarDIY()">last year</button>
+<button onclick="lastMonthCalendarDIY()">last month</button>
+<button onclick="nextMonthCalendarDIY()">next month</button>
+<button onclick="nextYearCalendarDIY()">next year</button>
+<script>
+    /*原始日历*/
+    /*function doCalendar(){
+        var i, k,
+            today = new Date(),                                 //获取当前日期
+            y = today.getFullYear(),                            //获取日期中的年份
+            m = today.getMonth(),                               //获取日期中的月份(需要注意的是：月份是从0开始计算，获取的值比正常月份的值少1)
+            d = today.getDate(),                                //获取日期中的日(方便在建立日期表格时高亮显示当天)
+            firstday = new Date(y, m, 1),                       //获取当月的第一天
+            dayOfWeek = firstday.getDay(),                      //判断第一天是星期几(返回[0-6]中的一个，0代表星期天，1代表星期一，以此类推)
+            days_per_month = new Array(31, 28 + isLeap(y), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),                  //创建月份数组
+            str_nums = Math.ceil((dayOfWeek + days_per_month[m]) / 7);                                               //确定日期表格所需的行数
+        document.write("<table cellspacing='0'><tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr>");  //打印表格第一行(显示星期)
+        for (i = 0; i < str_nums; i += 1) {                  //二维数组创建日期表格
+            document.write('<tr>');
+            for (k = 0; k < 7; k++) {
+                var idx = 7 * i + k;                               //为每个表格创建索引,从0开始
+                var date = idx - dayOfWeek + 1;                    //将当月的1号与星期进行匹配
+                (date <= 0 || date > days_per_month[m]) ? date = '&nbsp;': date = idx - dayOfWeek + 1;    //索引小于等于0或者大于月份最大值就用空表格代替
+                date == d ? document.write('<td class="today">' + date + '</td>') : document.write('<td>' + date + '</td>');    //高亮显示当天
+            }
+            document.write('</tr>');
+        }
+        document.write('</table>');
+    }*/
+    /*改造第一版*/
+    var currentYear=new Date().getFullYear();   //初始化为当前年份
+    var currentMonth=new Date().getMonth();   //初始化为当前月份
+    function lastYearCalendarDIY(){         //上一年
+        currentYear=currentYear-1;
+        doCalendarDIY(currentYear,currentMonth);
+    }
+    function lastMonthCalendarDIY(){        //上个月
+        if(currentMonth==0){
+            currentMonth=11;
+            currentYear=currentYear-1;
+        }else{
+            currentMonth=currentMonth-1;
+        }
+        doCalendarDIY(currentYear,currentMonth);
+    }
+    function nextMonthCalendarDIY(){    //下个月
+        if(currentMonth==11){
+            currentMonth=0;
+            currentYear=currentYear+1;
+        }else{
+            currentMonth=currentMonth+1;
+        }
+        doCalendarDIY(currentYear,currentMonth);
+    }
+    function nextYearCalendarDIY(){     //下一年
+        currentYear=currentYear+1;
+        doCalendarDIY(currentYear,currentMonth);
+    }
+    function isLeap(year) {  //判断当前年份是否是闰年(闰年2月份有29天，平年2月份只有28天)
+        return year % 4 == 0 ? (year % 100 != 0 ? 1 : (year % 400 == 0 ? 1 : 0)) : 0;
+    }
+    /*做日历*/
+    /*function doCalendarDIY(toYear,toMonth){
+        var today = new Date();                                 //获取当前日期
+        if(toYear!=null&&toMonth!=null){                        //跳到哪年哪月
+            today = new Date(toYear,toMonth);
+        }
+        var i, k,
+            y = today.getFullYear(),                            //获取日期中的年份
+            m = today.getMonth(),                               //获取日期中的月份(需要注意的是：月份是从0开始计算，获取的值比正常月份的值少1)
+            d = today.getDate(),                                //获取日期中的日(方便在建立日期表格时高亮显示当天)
+            firstday = new Date(y, m, 1),                       //获取当月的第一天
+            dayOfWeek = firstday.getDay(),                      //判断第一天是星期几(返回[0-6]中的一个，0代表星期天，1代表星期一，以此类推)
+            days_per_month = new Array(31, 28 + isLeap(y), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),                  //创建月份数组
+            name_of_month=new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"),                  //每个月显示什么名字
+            name_of_week=new Array("日", "一", "二", "三", "四", "五", "六"),                  //每天显示什么名字
+            str_nums = Math.ceil((dayOfWeek + days_per_month[m]) / 7);                                               //确定日期表格所需的行数
+        $("#calendarDIY").html("");             //初始化日历
+        $("#calendarDIY").append("<table class='calendarDIYBorderColor'></table>");
+            $("#calendarDIY table").append("<tr></tr>");   /!*第1行*!/
+                $("#calendarDIY table tr:eq(0)").append("<th rowspan='3' colspan='2' class='calendarDIYBorderColor'></th>");
+                $("#calendarDIY table tr:eq(0)").append("<th colspan='"+days_per_month[m]+"' class='calendarDIYBorderColor'>"+y+"年"+(m+1)+"月"+"</th>");
+
+            $("#calendarDIY table").append("<tr></tr>");   /!*第2行*!/
+                for(var i=0;i<days_per_month[m];i++){
+                    $("#calendarDIY table tr:eq(1)").append("<th class='calendarDIYBorderColor'>"+(i+1)+"</th>");
+                }
+
+            $("#calendarDIY table").append("<tr></tr>");   /!*第3行*!/
+                var whichDay=dayOfWeek;
+                for(var i=0;i<days_per_month[m];i++){
+                    $("#calendarDIY table tr:eq(2)").append("<th class='calendarDIYBorderColor'>"+name_of_week[whichDay]+"</th>");
+                    if(whichDay<6){
+                        whichDay++;
+                    }else{
+                        whichDay=0;
+                    }
+                }
+    }*/
+
+
+    /*改造第二版*/
+    /*做日历-->显示当前日期前七天*/
+    /*function doCalendarDIY(toYear,toMonth,toDay){
+        var today = new Date();                                 //获取当前日期
+        if(toYear!=null&&toMonth!=null&&toDay!=null){                        //跳到哪年哪月
+            today = new Date(toYear,toMonth,toDay);
+        }
+        var i, k,
+            y = today.getFullYear(),                            //获取日期中的年份
+            m = today.getMonth(),                               //获取日期中的月份(需要注意的是：月份是从0开始计算，获取的值比正常月份的值少1)
+            d = today.getDate(),                                //获取日期中的日(方便在建立日期表格时高亮显示当天)
+            firstday = new Date(y, m, 1),                       //获取当月的第一天
+            dayOfWeek = firstday.getDay(),                      //判断第一天是星期几(返回[0-6]中的一个，0代表星期天，1代表星期一，以此类推)
+            days_per_month = new Array(31, 28 + isLeap(y), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),                  //创建月份数组
+            name_of_month=new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"),                  //每个月显示什么名字
+            name_of_week=new Array("日", "一", "二", "三", "四", "五", "六");                  //每天显示什么名字
+        var date=new Date();
+        date.setDate(today.getDate()-7);    //七天前的日期
+        $("#calendarDIY").html("");             //初始化日历
+        $("#calendarDIY").append("<table class='calendarDIYBorderColor'></table>");
+        $("#calendarDIY table").append("<tr></tr>");   /!*第1行*!/
+        $("#calendarDIY table tr:eq(0)").append("<th rowspan='3' colspan='2' class='calendarDIYBorderColor'></th>");
+        $("#calendarDIY table tr:eq(0)").append("<th colspan='"+days_per_month[m]+"' class='calendarDIYBorderColor'>"+y+"年"+(m+1)+"月"+"</th>");
+
+        $("#calendarDIY table").append("<tr></tr>");   /!*第2行*!/
+        $("#calendarDIY table").append("<tr></tr>");   /!*第3行*!/
+        for(var i=0;i<7;i++){
+            date.setDate(date.getDate()+1);     //七天前，往后每次加一天
+            $("#calendarDIY table tr:eq(1)").append("<th class='calendarDIYBorderColor'>"+(date.getDate())+"</th>");
+    $("#calendarDIY table tr:eq(2)").append("<th class='calendarDIYBorderColor'>"+name_of_week[date.getDay()]+"</th>");
+    }
+    }*/
+
+    /*function loadServiceButton(){
+        setTimeout(()=>{
+            this.loadServiceButton();
+    }, 600000)
+        for(var i=3;i<$("#calendarDIY table tr").length;i++){	//初始化
+            for(var j=2;j<$("#calendarDIY table tr:eq("+i+") td").length;j++){
+                $("#calendarDIY table tr:eq("+i+") td:eq("+j+")").html("");
+            }
+        }
+
+        var today = new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1); 	//当天的23:59:59
+
+        var date=new Date();
+        date.setDate(today.getDate()-7);    //七天前的23:59:59
+        $.ajax({
+            type : "post",
+            dataType : "json",
+            url: 'vo_orders/findButtonMessage'
+        }).done(function(data){
+            debugger
+            console.log(data);
+            for(var i=0;i<data.length;i++){
+                for(var j=3;j<$("#calendarDIY table tr").length;j++){	//从第四行开始，前三行都是标题
+                    var serviceDate=new Date(data[i].date);
+
+                    if((data[i].orderKey==($("#calendarDIY table tr:eq("+j+")").attr("ordersId")))&&(serviceDate>date)&&(serviceDate<=today)){
+                        var div="";
+                        var item={};
+                        if(data[i].type==='1'){
+                            div="<div onclick=\"clickNew('"+data[i].type+"','"+data[i].orderKey+"','"+data[i].processCode+"','"+data[i].ifShow+"','"+data[i].serviceNo+"','"+data[i].serviceType+"','"+data[i].editType+"','"+data[i].vesselName+"','null')\" style='cursor:pointer;margin-top: 2px;margin-left: 4px;float:left;background-color: "+typecolor[data[i].editType]+";width:10px;height:10px;border-radius:5px;border:solid rgb(100,100,100) 1px;'></div>";
+                        }else if(data[i].type==='2'){
+                            div="<div onclick=\"clickNew('"+data[i].type+"','null','null','null','null','"+data[i].serviceType+"','"+data[i].editType+"','"+data[i].vesselName+"','"+data[i].mailKey+"')\" style='cursor:pointer;margin-top: 2px;margin-left: 4px;float:left;background-color: "+typecolor[data[i].editType]+";width:10px;height:10px;border-radius:5px;border:solid rgb(100,100,100) 1px;'></div>";
+                        }else if(data[i].type==='3'){
+                            div="<div onclick=\"clickNew('"+data[i].type+"','null','null','null','null','"+data[i].serviceType+"','"+data[i].editType+"','"+data[i].vesselName+"','"+data[i].mailKey+"')\" style='cursor:pointer;margin-top: 2px;margin-left: 4px;float:left;background-color: "+typecolor[data[i].editType]+";width:10px;height:10px;border-radius:5px;border:solid rgb(100,100,100) 1px;'></div>";
+                        }
+                        $("#calendarDIY table tr:eq("+j+") td[day='"+serviceDate.getDay()+"']").append(div);
+                    }
+                }
+            }
+
+        }).fail(function(data){
+
+        });
+    }*/
+    /*改造第三版*/
+    /*做日历-->显示服务最开始日期到当前日期(如果服务最开始日期到当前日期不足七天，就显示最近七天的)*/
+    function doCalendarDIY(toYear,toMonth,toDay){
+        var today = new Date();                                 //获取当前日期
+        if(toYear!=null&&toMonth!=null&&toDay!=null){                        //跳到哪年哪月
+            today = new Date(toYear,toMonth,toDay);
+        }
+        var i, k,
+            y = today.getFullYear(),                            //获取日期中的年份
+            m = today.getMonth(),                               //获取日期中的月份(需要注意的是：月份是从0开始计算，获取的值比正常月份的值少1)
+            d = today.getDate(),                                //获取日期中的日(方便在建立日期表格时高亮显示当天)
+            firstday = new Date(y, m, 1),                       //获取当月的第一天
+            dayOfWeek = firstday.getDay(),                      //判断第一天是星期几(返回[0-6]中的一个，0代表星期天，1代表星期一，以此类推)
+            days_per_month = new Array(31, 28 + isLeap(y), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31),                  //创建月份数组
+            name_of_month=new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"),                  //每个月显示什么名字
+            name_of_week=new Array("日", "一", "二", "三", "四", "五", "六");                  //每天显示什么名字
+        var dateOrigin=new Date(1501139235000);
+        var date=new Date(1501139235000);
+
+        if(((today - date) / 1000 / 60 / 60 /24)>7){
+            date.setDate(date.getDate());    //最早服务那一天
+        }else{
+            date.setDate(today.getDate()-6);    //六天前的那一天
+        }
+        $("#calendarDIY").html("");             //初始化日历
+        $("#calendarDIY").append("<table class='calendarDIYBorderColor'></table>");
+        $("#calendarDIY table").append("<tr></tr>");   /*第1行*/
+        $("#calendarDIY table").append("<tr></tr>");   /*第2行*/
+        $("#calendarDIY table").append("<tr></tr>");   /*第3行*/
+        $("#calendarDIY table tr:eq(0)").append("<th rowspan='3' colspan='2' class='calendarDIYBorderColor'></th>");
+
+        for(var y=0;y<monthDayDiff(dateOrigin, today);y++){
+            var colspanDays=0;
+            if(y==0){
+                colspanDays=(days_per_month[date.getMonth()]-date.getDate()+1);
+            }else if(y==monthDayDiff(dateOrigin, today)-1){
+                colspanDays=(today.getDate());
+            }else{
+                colspanDays=(days_per_month[date.getMonth()]);
+            }
+            $("#calendarDIY table tr:eq(0)").append("<th colspan='"+colspanDays+"' class='calendarDIYBorderColor'>"+date.getFullYear()+"年"+(date.getMonth()+1)+"月"+"</th>");
+            for(var i=0;i<colspanDays;i++){
+                $("#calendarDIY table tr:eq(1)").append("<th class='calendarDIYBorderColor'>"+(date.getDate())+"</th>");
+                $("#calendarDIY table tr:eq(2)").append("<th class='calendarDIYBorderColor'>"+name_of_week[date.getDay()]+"</th>");
+                date.setDate(date.getDate()+1);     //往后每次加一天
+            }
+        }
+
+    }
+
+    function monthDayDiff(startDate, endDate) {
+        var start = new Date(startDate);
+        var end = new Date(endDate);
+        var year = end.getFullYear() - start.getFullYear()-1;
+        var month = end.getMonth()+1 +(12-(start.getMonth()+1)+1) ;
+        return (12 * year + month);
+    }
+
+    $("#calendarDIY").scroll(function(){//给table外面的div滚动事件绑定一个函数
+        var left=$("#calendarDIY").scrollLeft();//获取滚动的距离
+        var trs=$("#calendarDIY table tr");//获取表格的所有tr
+        trs.each(function(i){//对每一个tr（每一行）进行处理
+//获得每一行下面的所有的td，然后选中下标为0的，即第一列，设置position为相对定位
+//相对于父div左边的距离为滑动的距离，然后设置个背景颜色，覆盖住后面几列数据滑动到第一列下面的情况
+//如果有必要也可以设置一个z-index属性
+            $(this).children().eq(0).css({"position":"relative","top":"0px","left":left,"background-color":"white"});
+            $(this).children().eq(1).css({"position":"relative","top":"0px","left":left,"background-color":"white"});
+        });
+    });
+</script>
+</body>
+</html>
