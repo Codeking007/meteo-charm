@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title>TEST</title>
+    <script src="map.js" ></script>
+    <script src="util.js" ></script>
+    <script src="image.js" ></script>
+    <!--<script src="meteo4.js" ></script>-->
+    <script src="meteo4gai.js" ></script>
+
+    <script src="https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js" ></script>
+    <script src='https://cdn.bootcss.com/mapbox-gl/0.45.0/mapbox-gl-dev.js'></script>
+    <link href='https://cdn.bootcss.com/mapbox-gl/0.45.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #conDiv { position:absolute; bottom:2%;width:99%; height: 20vh; }
+        #console { width: 100%;height: 100%;}
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+    let con = "";
+    let meteo = new Meteo();
+    function p(val){
+        con+=val;
+        con+="\r\n";
+        document.getElementById("console").value = con;
+    }
+    // const c = [[0, [0, 0, 0, 0]],  [1, [0, 89, 166, 1]], [1.5, [13, 100, 255, 1]], [2, [15, 21, 167, 1]],
+    //     [2.5, [247, 74, 255, 1]], [3, [188, 0, 184, 1]], [4, [151, 0, 0, 1]], [5, [255, 4, 83, 1]], [7, [255, 98, 69, 1]], [10, [255, 255, 255, 1]], [12, [188, 141, 190, 1]]];
+    const c = [[99e3, [21, 84, 187, 1]],[99500, [21, 134, 187, 1]],[1e5,[21, 158, 187, 1]], [100300, [43, 223, 221, 1]],[100600, [108, 247, 245, 1]],[100900, [177, 245, 255, 1]],[101500, [24, 132, 14, 1]], [101900, [209, 213, 36, 1]],[102200, [235, 167, 21, 1]], [102500, [230, 71, 39, 1]],
+        [103e3, [89, 27, 66, 1]]];
+    meteo.setColor(c);
+    const _data = turf.featureCollection([
+        // turf.lineString([[10, 50], [10, 40], [-10, 40], [-10, 50], [10, 50]]),
+        turf.lineString([[1, 0],[0, 5], [-1, 0], [1, 0]]),
+    ]);
+
+    const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: {
+            "version": 8,
+            "sources": {
+                "states":{
+                    "type": "geojson",
+                    "data": _data
+                },
+                // "map": {
+                //     "type": "raster",
+                //     'tiles': ["http://map.unmeteo.com/geoserver/gwc/service/wmts?layer=unmeteo%3Acountry&style=&tilematrixset=EPSG%3A900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fpng&TileMatrix=EPSG%3A900913%3A{z}&TileCol={x}&TileRow={y}"],
+                //     'tileSize': 256
+                // },
+            },
+            "layers": [{
+                'id': 'line-animation',
+                "type": "fill",
+                'source': "states",
+                'paint': {
+                    // 'fill-outline-color': 'rgba(255,255,255,1)'
+                }
+            }]
+        },
+        center: [0, 0], // starting position
+        zoom: 1.1 // starting zoom
+    });
+
+    const done = function(err, img,tile,callback){
+        delete tile.request;
+        if (tile.aborted) {
+            tile.state = 'unloaded';
+            callback(null);
+        } else if (err) {
+            tile.state = 'errored';
+            callback(err);
+        } else if (img) {
+            if (this.map._refreshExpiredTiles) tile.setExpiryData(img);
+            delete (img).cacheControl;
+            delete (img).expires;
+            const context = this.map.painter.context;
+            const gl = context.gl;
+            tile.texture = this.map.painter.getTileTexture(img.width);
+            if (tile.texture) {
+                tile.texture.bind(gl.LINEAR, gl.CLAMP_TO_EDGE, gl.LINEAR_MIPMAP_NEAREST);
+                gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0,img.width,img.height, gl.RGBA, gl.UNSIGNED_BYTE, img.data);
+            } else {
+                tile.texture = new Texture(context, img, gl.RGBA);
+                tile.texture.bind(gl.LINEAR, gl.CLAMP_TO_EDGE, gl.LINEAR_MIPMAP_NEAREST);
+                if (context.extTextureFilterAnisotropic) {
+                    gl.texParameterf(gl.TEXTURE_2D, context.extTextureFilterAnisotropic.TEXTURE_MAX_ANISOTROPY_EXT, context.extTextureFilterAnisotropicMax);
+                }
+            }
+            gl.generateMipmap(gl.TEXTURE_2D);
+            tile.state = 'loaded';
+            callback(null);
+        }
+    };
+    function buildShadedTile(tile,cache) {
+        let coord = tile.tileID.canonical;
+        return meteo.getVectorTile(coord.x,coord.y,coord.z);
+    };
+    meteo.load("7.png",false).then(()=>{
+        map.on('load',function () {
+            // map.addSource("test",{type: 'raster',"tiles":["1.png"]});
+            map.addSource("test",{type: 'geojson',"data":{"type":"FeatureCollection","features":[]}});
+            const geo = map.getSource("test");
+            geo.tileSize = 256;
+            geo.loadTile = (tile, callback)=>{
+                // const t0 = new Date().getTime();
+                const img = buildShadedTile(tile);
+                // const t1 = new Date().getTime();
+                // console.log("tile");
+                if(img){
+                    done.bind(geo)(null, img ,tile,callback);
+                }
+            };
+            map.addLayer({
+                'id': "test",
+                "source": "test",
+                'type':'raster',
+                'paint' : {
+                    'raster-opacity' : 0.5
+                }});
+            // function step(){
+            //     map._render();
+            //     requestAnimationFrame(step)
+            // }
+            // step();
+
+        });
+        map.on('move',(e)=>{
+            // console.log(e.target.transform);
+        });
+    });
+    class Texture {
+
+        constructor(context, image, format, premultiply) {
+            this.context = context;
+
+            const {width, height} = image;
+            this.size = [width, height];
+            this.format = format;
+
+            this.texture = context.gl.createTexture();
+            this.update(image, premultiply);
+        }
+
+        update(image, premultiply) {
+            const {width, height} = image;
+            this.size = [width, height];
+
+            const {context} = this;
+            const {gl} = context;
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);
+            context.pixelStoreUnpack.set(1);
+
+            if (this.format === gl.RGBA && premultiply !== false) {
+                context.pixelStoreUnpackPremultiplyAlpha.set(true);
+            }
+
+            if (image instanceof HTMLImageElement || image instanceof HTMLCanvasElement || image instanceof HTMLVideoElement || image instanceof ImageData) {
+                gl.texImage2D(gl.TEXTURE_2D, 0, this.format, this.format, gl.UNSIGNED_BYTE, image);
+            } else {
+                gl.texImage2D(gl.TEXTURE_2D, 0, this.format, width, height, 0, this.format, gl.UNSIGNED_BYTE, image.data);
+            }
+        }
+
+        bind(filter, wrap, minFilter) {
+            const {context} = this;
+            const {gl} = context;
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);
+
+            if (filter !== this.filter) {
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, minFilter || filter);
+                this.filter = filter;
+            }
+
+            if (wrap !== this.wrap) {
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
+                this.wrap = wrap;
+            }
+        }
+
+        destroy() {
+            const {gl} = this.context;
+            gl.deleteTexture(this.texture);
+            this.texture = (null     );
+        }
+    }
+
+</script>
+
+</body>
+</html>

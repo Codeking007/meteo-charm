@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title>TEST</title>
+    <script src="map.js"></script>
+    <script src="util.js"></script>
+    <script src="image.js"></script>
+    <!--fixme：增加的时候看帧缓冲区初始化到哪了-->
+    <!--<script src="meteo.js" ></script>                   &lt;!&ndash;fixme:原始版本+修正WebGL和Mapbox正负数问题(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteoleida.js" ></script>-->
+    <!--<script src="meteo01.js" ></script>             &lt;!&ndash;fixme：卷积一次+修WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0101.js" ></script>             &lt;!&ndash;fixme：卷积一次+window.devicePixelRatio+修WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo02.js" ></script>             &lt;!&ndash;fixme：重复卷积+修WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo03.js" ></script>             &lt;!&ndash;fixme：帧缓冲区初始化放到load里和resize里++延缓刷新++先铺热力图，再找相对高低点、重复卷积+修WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0301.js" ></script>-->
+    <!--<script src="meteo04.js" ></script>             &lt;!&ndash;fixme:等值线+经纬度线+修WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo05.js" ></script>             &lt;!&ndash;fixme:等值线+mapbox显示气压相对高点和相对低点+修WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0501.js" ></script>               &lt;!&ndash;fixme:mapbox显示所有值==>跑崩了，可以把点弄少点+mapbox显示气压相对高点和相对低点+修WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo06.js" ></script>             &lt;!&ndash;fixme:meteo03+显示文字+修WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0601.js" ></script>               &lt;!&ndash;fixme：试验==>热力图+文字+修正WebGL和Mapbox正负数问题(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0602.js" ></script>               &lt;!&ndash;fixme：试验==>热力图+文字+修正WebGL和Mapbox正负数问题(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0603.js" ></script>               &lt;!&ndash;fixme：试验==>热力图+显示固定文字+修正WebGL和Mapbox正负数问题(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0604.js" ></script>               &lt;!&ndash;fixme：热力图+显示指定位置的文字+修正WebGL和Mapbox正负数问题(注释的几个没改)(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0605.js" ></script>               &lt;!&ndash;fixme：进化版1==>热力图+显示指定位置的文字+修正WebGL和Mapbox正负数问题(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0606.js" ></script>               &lt;!&ndash;fixme：进化版2==>热力图+mapbox显示指定位置的文字+显示指定位置的文字+修正WebGL和Mapbox正负数问题(length方法用错了)&ndash;&gt;-->
+    <!--<script src="iso.js" ></script>                     &lt;!&ndash;fixme：孙哥mapbox写的相对高低点&ndash;&gt;-->
+    <!--<script src="meteo0607.js" ></script>               &lt;!&ndash;fixme：进化版3==>热力图+mapbox显示指定位置的文字+孙哥mapbox显示相对高低点+修正WebGL和Mapbox正负数问题(length方法用错了)&ndash;&gt;-->
+    <!--<script src="meteo0608.js" ></script>               &lt;!&ndash;fixme：进化版4==>热力图+mapbox显示指定位置的文字+孙哥mapbox显示相对高低点+cmm取的不是色卡的，而是图片的最大最小值+存储双通道的算法改正，原先写的有问题+102000线显示成蓝色+修正WebGL和Mapbox正负数问题(length方法用错了和cmm)&ndash;&gt;-->
+    <!--<script src="meteo0601_example.js" ></script>       &lt;!&ndash;fixme：画kx+b+修正WebGL和Mapbox正负数问题(length方法用错了) &ndash;&gt;-->
+    <!--<script src="meteo01_SMA.js" ></script>                   &lt;!&ndash;fixme:SMA:热力图+修正WebGL和Mapbox正负数问题(length方法用错了)&ndash;&gt;-->
+    <!--region 等值线图==>（带rgbalonlat_w9==>经纬度四通道数据）-->
+    <!--<script src="rgbalonlat_w9.js" ></script>               &lt;!&ndash;fixme:经纬度存成rgba四通道二维数组&ndash;&gt;-->
+    <!--<script src="meteo02_SMA.js" ></script>                   &lt;!&ndash;fixme:SMA:等值线图==>直接用图片卷积==>但没去掉边界+修正WebGL和Mapbox正负数问题(length方法用错了和cmm) &ndash;&gt;-->
+    <!--<script src="meteo03_SMA.js" ></script>                   &lt;!&ndash;fixme:SMA:等值线图==>先铺热力图、再卷积、再找等值线+是否去掉边界+修正第一次卷积时取的热力图数据错了，应该按四通道来变成二通道再卷积+修正WebGL和Mapbox正负数问题(length方法用错了和cmm)&ndash;&gt;-->
+    <!--<script src="meteo0201_SMA.js" ></script>                   &lt;!&ndash;fixme:SMA:等值线图==>不卷积图片，直接判断画等值线==>但没去掉边界+修正WebGL和Mapbox正负数问题(length方法用错了和cmm)&ndash;&gt;-->
+    <!--<script src="meteo0202_SMA.js" ></script>                   &lt;!&ndash;fixme:SMA:等值线图==>不卷积图片，直接判断画等值线+用纹理的经纬度四通道，而不用json文件+是否去掉边界+修正WebGL和Mapbox正负数问题(length方法用错了和cmm)&ndash;&gt;-->
+    <!--<script src="meteo0203_SMA.js" ></script>                   &lt;!&ndash;fixme:SMA:等值线图==>不卷积图片，直接判断画等值线+用纹理的经纬度四通道，而不用json文件+是否去掉边界+把最大最小值做偏移好让温度-273+修正WebGL和Mapbox正负数问题(length方法用错了和cmm)&ndash;&gt;-->
+    <!--<script src="meteo0204_SMA.js" ></script>                   &lt;!&ndash;fixme:SMA:等值线图==>不卷积图片，直接判断画等值线+用纹理的经纬度四通道，而不用json文件+是否去掉边界+把最大最小值做偏移好让温度-273+修正WebGL和Mapbox正负数问题(length方法用错了和cmm)+加边界限制，只画内边界和外边界之间的&ndash;&gt;-->
+
+    <!--endregion-->
+
+    <!--region-->
+    <!--<script src="kriging.js" ></script>         &lt;!&ndash;克罗金算法&ndash;&gt;-->
+    <!--<script src="krigingES6.js" ></script>         &lt;!&ndash;ES6改写克罗金算法&ndash;&gt;-->
+    <!--<script src="meteo_kriging.js"></script>                   &lt;!&ndash;fixme:meteo.js基础上应用克里金插值&ndash;&gt;-->
+    <script src="meteo_kriging111.js"></script>             <!--fixme：测试某矩阵的逆矩阵-->
+    <!--endregion-->
+
+    <script src="https://cdn.bootcss.com/gl-matrix/2.5.1/gl-matrix.js"></script>
+    <script src="https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js"></script>
+    <script src='https://cdn.bootcss.com/mapbox-gl/0.45.0/mapbox-gl.js'></script>
+    <link href='https://cdn.bootcss.com/mapbox-gl/0.45.0/mapbox-gl.css' rel='stylesheet'/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: black
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #conDiv {
+            position: absolute;
+            bottom: 2%;
+            width: 99%;
+            height: 20vh;
+        }
+
+        #console {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+    let con = "";
+
+    function p(val) {
+        con += val;
+        con += "\r\n";
+        document.getElementById("console").value = con;
+    }
+
+    // 气温==>11.png==>色卡渐变 tmp_25.png
+    // const c=[[213.3, [11, 41, 159, 1]], [239.1, [49, 125, 240, 1]], [264.9, [57, 198, 233, 1]], [290.8, [233, 233, 57, 1]], [316.6, [248, 83, 42, 1]], [342.4, [255, 34, 34, 1]], [342.4, [255, 34, 34, 1]]];
+    // 气温==>11.png==>色卡不渐变 tmp_25.png
+    // const c=[[293, [0, 0, 255, 1]], [303, [255, 255, 0, 1]], [308, [255, 0, 0, 1]],[320, [0, 0, 0, 1]]];
+    // 耦合浪==>10.png
+    /* const c=[[0, [198, 244, 255, 1]], [.5, [0, 194, 243, 1]], [1, [0, 89, 166, 1]], [1.5, [13, 100, 255, 1]], [2, [15, 21, 167, 1]],
+         [2.5, [247, 74, 255, 1]], [3, [188, 0, 184, 1]], [4, [151, 0, 0, 1]], [5, [255, 4, 83, 1]], [7, [255, 98, 69, 1]], [10, [255, 255, 255, 1]], [12, [188, 141, 190, 1]]];*/
+    // 气压==>at0_SMA.png、at0_25.png
+    const c = [[48000, [0, 0, 255, 1]], [92000, [152, 189, 197, 1]], [96000, [142, 179, 187, 1]], [100000, [71, 168, 167, 1]], [101000, [51, 98, 139, 1]], [102000, [157, 151, 60, 1]], [103000, [97, 61, 81, 1]], [105000, [95, 60, 81, 1]]];
+    // 能见度==>vis.png
+    /*const c=[[50, [102, 39, 0, 1]], [500, [163, 68, 0, 0.8]], [2000, [153, 153, 153, 0.6]], [6000, [102, 102, 102, 0.4]], [8000, [77, 77, 77, 0.3]],
+        [10000, [26, 26, 26, 0.1]], [14000, [51, 51, 51, 0.2]], [20000, [0, 0, 0, 0]]];*/
+    const _data = turf.featureCollection([
+        // turf.lineString([[10, 50], [10, 40], [-10, 40], [-10, 50], [10, 50]]),
+        turf.lineString([[1, 0], [0, 5], [-1, 0], [1, 0]]),
+    ]);
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGZiNTY0IiwiYSI6ImNqN2I3NnplMTBwb2IzMnJzcWh0OWp6YTQifQ.TM_EQumke3MvFzemeZE48g';
+    const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: {
+            "version": 8,
+            // "sprite": "mapbox://sprites/mapbox/bright-v8",
+            "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "sources": {
+                "test": {
+                    "type": "geojson",
+                    "data": _data
+                },
+                "states": {
+                    "type": "geojson",
+                    "data": _map
+                },
+            },
+            "layers": [{
+                'id': 'line-animation',
+                "type": "fill",
+                'source': "states",
+                'paint': {
+                    'fill-color': 'rgba(100, 100, 100, 1)',
+                    'fill-outline-color': 'rgba(255,255,255,1)'
+                }
+            }]
+        },
+        /*center: [0, 0], // starting position
+        zoom: 2 // starting zoom*/
+        center: [122, 31.5], // starting position
+        zoom: 2 // starting zoom
+    });
+    let meteo;
+    map.on('load', function () {
+        meteo = new Meteo(map);
+        meteo.show();
+        meteo.setColor(c);
+        meteo.load("at0_25.png",false);
+        // meteo.load("tmp_25.png",false);
+
+    });
+    /*MeteoImage.load("18093006.png").then((meteo) => {
+        let kriging=new Kriging();
+        const canvas = this.canvas = document.createElement("canvas");
+        // fixme:(1)
+        let t = [ /!* Target variable *!/ ];          // 样本值
+        let x = [ /!* X-axis coordinates *!/ ];       // 样本x坐标
+        let y = [ /!* Y-axis coordinates *!/ ];       // 样本y坐标
+        let model = "exponential";                  // 半变异函数模型
+        let sigma2 = 0;
+        let alpha = 10;
+        let variogram = kriging.train(t, x, y, model, sigma2, alpha);
+        // fixme:(2)
+        let polygons=[[[-180,-90],[-180,90],[180,90],[180,-90],[-180,-90]]];
+        let width=canvas.style.width;       // todo
+        let grid=kriging.grid(polygons, variogram, width);
+        // fixme:(3)
+        let xlim=[-180,180];
+        let ylim=[-90,90];
+        let colors=["RGBA(255,0,0,255)","RGBA(0,255,0,255)","RGBA(0,0,255,255)","RGBA(255,255,255,255)"];
+        kriging.plot(canvas,grid,xlim,ylim,colors);
+    });*/
+
+</script>
+
+</body>
+</html>
