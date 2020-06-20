@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title>TEST</title>
+    <script src="map.js"></script>
+    <script src="util.js"></script>
+    <script src="image.js"></script>
+
+    <script src="customlayer.js" ></script>                   <!--fixme:原始版本:热力图：把WebGL放到mapbox中进行渲染-->
+
+
+    <!--region fixme:风杆-->
+    <!--<script src="customlayer_bar.js" ></script>               &lt;!&ndash;fixme：等格点风杆+算风级和风方向的方法改成最新的了+风杆图片转成Uint8Array数据然后才生成的纹理，没有直接生成图片，否则图片显示不对，透明色都不对+自动适配全屏幕，并按风杆图标大小算每行每列显示多少个+因为风级和方向函数用了最新的，重新算了下uv方向即风杆旋转方向和0°位置，并修正使其旋转方向显示正确并且风杆图标显示正确&ndash;&gt;-->
+
+
+    <script src="https://cdn.bootcss.com/gl-matrix/2.5.1/gl-matrix.js"></script>
+    <script src="https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js"></script>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.53.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.53.0/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: black
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #conDiv {
+            position: absolute;
+            bottom: 2%;
+            width: 99%;
+            height: 20vh;
+        }
+
+        #console {
+            width: 100%;
+            height: 100%;
+        }
+
+        #text {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: 10;
+            color: #00ffff;
+        }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<div id='map1'></div>
+<canvas id="text"></canvas>
+<script>
+    // 气压==>at0_SMA.png、at0_25.png
+    const c = [[48000, [0, 0, 255, 1]], [92000, [152, 189, 197, 1]], [96000, [142, 179, 187, 1]], [100000, [71, 168, 167, 1]], [101000, [51, 98, 139, 1]], [102000, [157, 151, 60, 1]], [103000, [97, 61, 81, 1]], [105000, [95, 60, 81, 1]]];
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGZiNTY0IiwiYSI6ImNqN2I3NnplMTBwb2IzMnJzcWh0OWp6YTQifQ.TM_EQumke3MvFzemeZE48g';
+    const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: {
+            "version": 8,
+            // "sprite": "mapbox://sprites/mapbox/bright-v8",
+            "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "sources": {
+                "states": {
+                    "type": "geojson",
+                    "data": _map
+                },
+            },
+            "layers": [{
+                'id': 'line-animation',
+                "type": "fill",
+                'source': "states",
+                'paint': {
+                    'fill-color': 'rgba(100, 100, 100, 1)',
+                    'fill-outline-color': 'rgba(255,255,255,1)'
+                }
+            }]
+        },
+        zoom: 1.69,
+        center: [-9.4, -26.8],
+        // bearing: 131,
+        // pitch: 60,
+        hash: true
+    });
+    let meteo;
+    let custom;
+    map.on('load', function () {
+
+        /*meteo = new Meteo(map);
+        meteo.show();
+        meteo.setColor(c);
+        // meteo.load("at0_25.png",false);
+        meteo.load("18072516_25.png",true);*/
+
+        custom=new Custom(map,c);
+        map.addLayer(custom);
+
+        map.addLayer({
+            'id': 'typhoonWarning',
+            'type': 'symbol',
+            'source': {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [{
+                        'type': 'Feature',
+                        'properties': {
+                            'color': "#900",
+                            "description":"aaaa"
+                        },
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': [
+                                [0, 0],
+                                [50, 50]
+                            ]
+                        }
+                    }, {
+                        'type': 'Feature',
+                        'properties': {
+                            'color': "#35e80d",
+                            "description":"bbbb"
+                        },
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': [
+                                [-20, -20],
+                                [-50, -50]
+                            ]
+                        }
+                    }]
+                }
+            },
+            'layout': {
+                "symbol-placement":'line',
+                'visibility': 'visible',
+                "text-size" : 25,
+                "text-field": "{description}"
+            },
+            'paint': {
+                "text-color": "red"
+            }
+        }/*,'mycustomlayer'*/);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="./util.js" ></script>
+    <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+    <script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
+    <script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-helper.js"></script>
+    <!-- you can and should delete this script. it is only used on the site to help with errors -->
+    <script src="https://webglfundamentals.org/webgl/resources/m3.js"></script>
+    <style>
+        .c{
+            width: 512px;
+            height: 512px;
+        }
+        body{
+            background: white;
+        }
+        #cntr{
+            width: 200px;
+            position: absolute;
+            left: 512px;
+            top: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="c">
+    <canvas id="c" class="c" width="512" height="512"></canvas>
+</div>
+<div id="cntr">
+    <div id="ui">
+        <div id="x"></div>
+        <div id="y"></div>
+        <div id="angle"></div>
+        <div id="scaleX"></div>
+        <div id="scaleY"></div>
+    </div>
+</div>
+</body>
+<script>
+    //顶点着色器
+    const vs = `
+        attribute vec2 a_position;
+        attribute float a_value;
+        uniform mat3 u_matrix;
+        varying float v_value;
+        void main(){
+            gl_Position = vec4((u_matrix * vec3(a_position, 1)).xy, 0, 1);
+            v_value = a_value;
+        }
+    `;
+    //片段着色器
+    // vec4 min = texture2D(u_color, vec2(floor(v_value),0));
+    // vec4 max = texture2D(u_color, vec2(ceil(v_value),0));
+
+    const fs = `
+        precision mediump float;
+        uniform sampler2D u_color;
+        varying float v_value;
+        uniform float u_min;
+        uniform float u_max;
+        void main() {
+            // float u_min = 0.0;
+            // float u_max = 12.0;
+            // float val = v_value * 25.0;
+            // vec4 min = texture2D(u_color, vec2(floor(val)/250.0,0));
+            // vec4 max = texture2D(u_color, vec2(ceil(val)/250.0,0));
+            // vec4 color = mix(min,max,fract(val));
+            vec4 color = texture2D(u_color, vec2((v_value-u_min)/(u_max-u_min),0));
+            gl_FragColor = color;
+        }
+`;
+    function charge(data,ps,cs,width,height,min,max){
+        let idx = 0;
+        for(let n = 1;n<height;n++){
+            for(let m = 1;m<width;m++){
+                let pp=[[ratio(m-1,width),ratio(n-1,height),getData(data,m-1,n-1,width,min,max)],
+                    [ratio(m-1,width),ratio(n,height),getData(data,m-1,n,width,min,max)],
+                    [ratio(m,width),ratio(n,height),getData(data,m,n,width,min,max)],
+                    [ratio(m,width),ratio(n-1,height),getData(data,m,n-1,width,min,max)]];
+                idx += addRectangle(idx,pp,ps,cs);
+            }
+        }
+        return idx;
+        function ratio(v,l){return (2*v-l)/l}
+        function addRectangle(idx,pp,ps,cs){
+            let list = pp.filter(value => !isNaN(value[2]));
+            if(list.length <3) return 0;
+            if(list.length === 3){
+                addL(idx,ps,cs,list);
+                return 3;
+            }else{
+                let c = Math.abs(pp[0][2]-pp[2][2])-Math.abs(pp[1][2]-pp[3][2]);
+                let l = [];
+                if(c>0)
+                    l.push(pp[0],pp[1],pp[3],pp[1],pp[2],pp[3]);
+                else
+                    l.push(pp[0],pp[1],pp[2],pp[0],pp[2],pp[3]);
+                addL(idx,ps,cs,l);
+                return l.length;
+            }
+        }
+        function addL(idx,ps,cs,l){
+            for(let m=0;m<l.length;m++){
+                let pi = idx+m;
+                ps[2*pi] = l[m][0];
+                ps[2*pi+1] = l[m][1];
+                cs[pi] = l[m][2];
+            }
+        }
+        function getData(data,col,row,width,height,min,max){
+            // return (data[row*width+col]-min)/(max-min);
+            return data[row*width+col];
+        }
+    }
+
+    function draw(gl,data,width,height){
+        const ps = new Float32Array(6*2*((width-1)*(height-1)));
+        const cs = new Float32Array(ps.length/2);
+        const c = [[0, [198, 244, 255, 1]], [.5, [0, 194, 243, 1]], [1, [0, 89, 166, 1]], [1.5, [13, 100, 255, 1]], [2, [15, 21, 167, 1]],
+            [2.5, [247, 74, 255, 1]], [3, [188, 0, 184, 1]], [4, [151, 0, 0, 1]], [5, [255, 4, 83, 1]], [7, [255, 98, 69, 1]], [10, [255, 255, 255, 1]], [12, [188, 141, 190, 1]]];
+        const color2D = createColorRamp(c);
+        const num = charge(data,ps,cs,width,height,c[0][0],c[c.length-1][0]);
+        let translation = [0, 0];
+        let angleInRadians = 0;
+        let scale = [1, 1];
+        // Setup a ui.
+        webglLessonsUI.setupSlider("#x", {value: translation[0], slide: updatePosition(0), min: -10, max: 10, step: 0.1});
+        webglLessonsUI.setupSlider("#y", {value: translation[1], slide: updatePosition(1), min: -10, max: 10, step: 0.1});
+        webglLessonsUI.setupSlider("#angle", {slide: updateAngle, max: 360});
+        webglLessonsUI.setupSlider("#scaleX", {value: scale[0], slide: updateScale(0), min: 1, max: 10, step: 0.1, precision: 2});
+        webglLessonsUI.setupSlider("#scaleY", {value: scale[1], slide: updateScale(1), min: 1, max: 10, step: 0.1, precision: 2});
+
+        drawScene();
+
+        function updatePosition(index) {
+            return function(event, ui) {
+                translation[index] = ui.value;
+                drawScene();
+            }
+        }
+
+        function updateAngle(event, ui) {
+            let angleInDegrees = 360 - ui.value;
+            angleInRadians = angleInDegrees * Math.PI / 180;
+            drawScene();
+        }
+
+        function updateScale(index) {
+            return function(event, ui) {
+                scale[index] = ui.value;
+                drawScene();
+            }
+        }
+
+        function drawScene(){
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            // create GLSL shaders, upload the GLSL source, compile the shaders
+            let vertexShader = createShader(gl, gl.VERTEX_SHADER, vs);
+            let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fs);
+            let program = createProgram(gl, vertexShader, fragmentShader);
+
+            const posLoc = gl.getAttribLocation(program, "a_position");
+            const valLoc = gl.getAttribLocation(program, "a_value");
+            const matLoc = gl.getUniformLocation(program, "u_matrix");
+            //position
+            let positionBuffer = createBuffer(gl,ps);
+            //color
+            let valueBuffer = createBuffer(gl,cs);
+            let colorTexture = createTexture(gl,gl.LINEAR,color2D,color2D.length/4,1);
+            // Tell WebGL how to convert from clip space to pixels
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.useProgram(program);
+            bindAttribute(gl,positionBuffer,posLoc,2);
+            bindAttribute(gl,valueBuffer,valLoc,1);
+            bindTexture(gl,colorTexture,null);
+            let matrix = [1,0,0,0,1,0,0,0,1];
+            matrix = m3.translate(matrix, translation[0], translation[1]);
+            matrix = m3.rotate(matrix, angleInRadians);
+            matrix = m3.scale(matrix, scale[0], scale[1]);
+            gl.uniformMatrix3fv(matLoc, false, matrix);
+            gl.uniform1f(gl.getUniformLocation(program, "u_min"),0.0);
+            gl.uniform1f(gl.getUniformLocation(program, "u_max"),12.0);
+            // draw
+            gl.drawArrays(gl.TRIANGLES, 0, num);
+        }
+    }
+
+    function main(){
+        const gl = document.getElementById("c").getContext("webgl", {preserveDrawingBuffer: true});
+        const image = new Image();
+        image.src = "1.png";
+        image.onload = function() {
+            let canvas = document.createElement("canvas");
+            canvas.width = image.width;
+            canvas.height = image.height;
+            let cxt = canvas.getContext("2d");
+            cxt.drawImage(image, 0, 0, image.width, image.height);
+            let data = transImageData(cxt.getImageData(0, 0, image.width, image.height - 1).data, cxt.getImageData(0, image.height - 1, 8, 1).data);
+            draw(gl,data[0],image.width, image.height - 1);
+            function transImageData(data, scale) {
+                let mm = new Array(3);
+                for (let n = 0; n < mm.length; n++) {
+                    let d = mm[n] = new Float32Array(2)
+                    let u = new Uint8Array(d.buffer);
+                    for (let m = 0; m < u.length; m++)
+                        u[m] = scale[4 * m + n];
+                }
+                let re = new Array(3);
+                for (let n = 0; n < mm.length; n++) {
+                    if (mm[n][0] === mm[n][1])
+                        break;
+                    re[n] = new Float32Array(data.length / 4);
+                    let min = mm[n][0];
+                    let max = mm[n][1];
+                    let sc = max - min;
+                    for (let m = 0; m < re[n].length; m++)
+                        if (data[4 * m + 3] === 0)
+                            re[n][m] = Number.NaN;
+                        else if(data[4 * m + n] === 255)
+                            re[n][m] = Number.NaN;
+                        else
+                            re[n][m] = sc * data[4 * m + n] / 250 + min;
+                }
+                return re;
+            }
+        }
+    }
+
+    main();
+
+</script>
+</html>

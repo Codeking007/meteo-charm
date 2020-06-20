@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>船舶详情canvas</title>
+    <style>
+        .c {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background: white;
+        }
+
+        #drawing {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="c">
+    <canvas id="drawing" height="200" width="200"></canvas>
+</div>
+</body>
+<script>
+    let drawing = document.getElementById("drawing");
+
+    if (drawing.getContext) {//确定浏览器支持 canvas
+        let context = drawing.getContext("2d");
+
+        //绘制红色矩形
+        context.fillStyle = "linear-gradient(90deg, rgb(118, 168, 253) 0%, rgb(131, 185, 249) 25%, rgb(123, 238, 255) 50%,  rgb(255, 236, 126) 75%,  rgb(251, 130, 210) 100%)";
+        context.fillRect(10, 10, 50, 50);
+
+        //绘制半透明的蓝色矩形
+        context.fillStyle = "rgba(0,0,255,0.5)";
+        context.fillRect(30, 30, 50, 50);
+
+        /*context.strokeStyle = "red";
+        context.fillStyle = "#0000ff";*/
+    }
+    /*
+    const image = document.getElementById("img");
+    let canvas = document.getElementById("c");
+    image.onload = () => {
+        canvas.width = image.width + 1;
+        canvas.height = image.height;
+        let cxt = canvas.getContext("2d");
+        cxt.drawImage(image, 1, 0);
+        cxt.drawImage(image, image.width - 1, 0, 1, image.height - 1, 0, 0, 1, image.height - 1);
+    }*/
+</script>
+
+</html>

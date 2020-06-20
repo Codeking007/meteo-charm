@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TEST</title>
+    <script src="map.js" ></script>
+    <script src="image.js" ></script>
+    <script src="util.js" ></script>
+    <!--<script src="mgl.js" ></script>     &lt;!&ndash;fixme：原始版本&ndash;&gt;-->
+    <script src="mgl1.js" ></script>     <!--fixme：改进版本==>1、255-256 2、offset 3、融混blend 4、PREC=255.0/254.0 -->
+    <script src="https://cdn.bootcss.com/gl-matrix/2.5.1/gl-matrix.js"></script>
+    <script src="https://cdn.bootcss.com/Turf.js/5.1.6/turf.min.js"></script>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.53.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.53.0/mapbox-gl.js"></script>
+    <style>
+        body { margin:0; padding:0; background: black}
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #conDiv { position:absolute; bottom:2%;width:99%; height: 20vh; }
+        #console { width: 100%;height: 100%;}
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGZiNTY0IiwiYSI6ImNqN2I3NnplMTBwb2IzMnJzcWh0OWp6YTQifQ.TM_EQumke3MvFzemeZE48g';
+    const _data = turf.featureCollection([
+        // turf.lineString([[10, 50], [10, 40], [-10, 40], [-10, 50], [10, 50]]),
+        turf.lineString([[1, 0],[0, 5], [-1, 0], [1, 0]]),
+    ]);
+    const map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: {
+            "version": 8,
+            "sources": {
+                "test":{
+                    "type": "geojson",
+                    "data": _data
+                },
+                "states":{
+                    "type": "geojson",
+                    "data": _map
+                },
+            },
+            "layers": [{
+                'id': 'line-animation',
+                "type": "fill",
+                'source': "states",
+                'paint': {
+                    'fill-color':'rgba(100, 100, 100, 1)',
+                    'fill-outline-color': 'rgba(255,255,255,1)'
+                }
+            }]
+        },
+        center: [0, 0], // starting position
+        zoom: 2 // starting zoom
+    });
+
+    const color = [[0,[37, 74, 255, 1]],[4,[0,99,254, 1]],[7,[0,198,254, 1]],[10,[36,193,147, 1]],[13,[0,229,1, 1]],[17,[0,249,0, 1]],
+        [20,[252,225,0, 1]],[23,[254, 174, 0, 1]],[27,[220,74,28, 1]],[30,[180,0,49, 1]],[33,[253,0,149, 1]],[35,[255,0,0, 1]]];
+    const mgl = new Mgl(map).setColor(color);
+    mgl.load("18072516_100.png");
+    mgl.play();
+</script>
+</body>
+</html>
