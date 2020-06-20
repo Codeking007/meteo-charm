@@ -1,0 +1,52 @@
+{
+  "name": "unimet-ui",
+  "version": "0.1.0",
+  "publishConfig": {
+    "registry": "http://svn.unmeteo.com:8081/repository/npm-hosted/"
+  },
+  "main": "./dist/flock.common.js",
+  "private": false,
+  "scripts": {
+    "ui-serve": "vue-cli-service serve --open",
+    "build": "vue-cli-service build",
+    "build-bundle": "vue-cli-service build --target lib --name flock ./src/lib/index.ts"
+  },
+  "dependencies": {
+    "fileloader": "^2.0.0",
+    "iview": "^3.0.0",
+    "mapbox-gl": "0.47.0",
+    "turf": "^3.0.14",
+    "vue": "^2.5.16",
+    "vue-class-component": "^6.0.0",
+    "vue-property-decorator": "^6.0.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/gl-matrix": "^2.4.0",
+    "@types/mapbox-gl": "^0.45.2",
+    "@types/turf": "^3.5.32",
+    "@vue/cli-plugin-babel": "^3.0.0-beta.15",
+    "@vue/cli-plugin-typescript": "^3.0.0-beta.15",
+    "@vue/cli-service": "^3.0.0-beta.15",
+    "gl-matrix": "^2.7.1",
+    "image-webpack-loader": "^4.3.1",
+    "iview-loader": "^1.2.1",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "url-loader": "^1.0.1",
+    "vue-template-compiler": "^2.5.16",
+    "webgl-debug": "^2.0.1",
+    "webpack-glsl-loader": "^1.0.1"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
