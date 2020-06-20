@@ -1,0 +1,40 @@
+{
+  "name": "unimet-meteo",
+  "version": "0.1.0",
+  "publishConfig": {
+    "registry": "http://svn.unmeteo.com:8081/repository/npm-hosted/"
+  },
+  "main": "./dist/meteo.common.js",
+  "private": false,
+  "scripts": {
+    "meteo-master-serve": "vue-cli-service serve --open",
+    "meteo-master-build": "vue-cli-service build",
+    "meteo-master-build-bundle": "vue-cli-service build --target lib --name meteo ./src/lib/index.ts"
+  },
+  "dependencies": {
+    "@turf/turf": "^5.1.6",
+    "core-js": "^2.6.5",
+    "gl-matrix": "^3.0.0",
+    "lodash": "^4.17.11",
+    "mapbox-gl": "^1.5.0",
+    "vue": "^2.6.6",
+    "vue-class-component": "^6.0.0",
+    "vue-property-decorator": "^8.0.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.5.0",
+    "@vue/cli-plugin-typescript": "^3.5.0",
+    "@vue/cli-service": "^3.5.0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
+    "typescript": "^3.2.1",
+    "vue-template-compiler": "^2.5.21",
+    "@types/mapbox-gl": "^1.5.2",
+    "@types/gl-matrix": "^2.4.5",
+    "webpack-glsl-loader": "^1.0.1",
+    "@types/lodash": "^4.14.123",
+    "axios": "^0.18.0"
+  }
+}
