@@ -43,6 +43,7 @@
     import {PolyLine} from "@/util/meteo/isoline/meteoinfo/global/PolyLine";
     import {PointD} from "@/util/meteo/isoline/meteoinfo/global/PointD";
     import {Contour} from "@/util/meteo/isoline/meteoinfo/contour";
+    import {exp, fileStreamHttp} from "@/util/http";
 
     let map = new MapUtil();
     export default Vue.extend({
@@ -214,21 +215,21 @@
             // todo:要取的经纬度位置
             let lon = 52.4645631;
             let lat = 71.31653;
-            /*fileStreamHttp.get("testArrayBuffer", null).then((data: Float32Array) => {
+            fileStreamHttp.get("testArrayBuffer", null).then((data: Float32Array) => {
                 console.log("第一次的Float32Array");
                 console.log(data);
                 console.log(data.buffer);
                 console.log("第一次得到的数据==>" + this.getArrayBufferData(data, lon, lat));
 
-                /!*const re = new Float32Array(data);
+                /*const re = new Float32Array(data);
                 const dv = new DataView(re.buffer);
                 for (let m = 0; m < re.length; m++) {
                     dv.setFloat32(m * 4, re[m]);
                 }
                 exp.postOnly("meteo-stream/post-meteo-stream.do", re).then(value => {
 
-                });*!/
-            });*/
+                });*/
+            });
 
             /*fileStreamHttp.get("postMeteoStream.txt", null).then((data1: Float32Array) => {
                 console.log("第二次的Float32Array");
