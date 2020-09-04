@@ -2,6 +2,8 @@
     <div class="app-main">
         <div id="map"></div>
         <canvas id="isolineText"></canvas>
+        <label class="ui_button ui_button_primary btn-control2" for="xFile">上传文件</label>
+        <form><input type="file" id="xFile" name="file1" style="position:absolute;clip:rect(0 0 0 0);" @change="file2Xce($event)"></form>
     </div>
 </template>
 <script lang="ts">
@@ -44,6 +46,8 @@
     import {PointD} from "@/util/meteo/isoline/meteoinfo/global/PointD";
     import {Contour} from "@/util/meteo/isoline/meteoinfo/contour";
     import {exp, fileStreamHttp} from "@/util/http";
+    import axios, {AxiosInstance} from "axios";
+    import S2CJson from "@/util/http/S2CJson";
 
     let map = new MapUtil();
     export default Vue.extend({
@@ -1161,6 +1165,44 @@
 
                 });
             },
+            postOnly<T>(url: string, data?: any): Promise<T> {
+                let httpnew = axios.create({
+                    headers: {'Content-Type': 'application/json;charset=UTF-8'},
+                    baseURL: "/",
+                });
+                return new Promise<T>((resolve, reject) => {
+                    httpnew.post<S2CJson>(url, data)
+                        .then(response => {
+                            debugger
+                            if (response.status !== 200)
+                                reject(response.statusText);
+                            else {
+                                resolve(response.data.data);
+                            }
+                        })
+                        .catch(reason => reject(reason));
+                });
+            },
+            file2Xce(event: any) {
+                debugger
+                let files = event.currentTarget.files;
+                if (files && files.length > 0) {
+                    let file = files[0];
+                    return new Promise((resolve, reject) => {
+                        let reader = new FileReader();
+                        reader.onload = (e: ProgressEvent<FileReader>) => {
+                            let arrayBuffer: ArrayBuffer = (e.target as any).result;
+                            console.log(arrayBuffer);
+                            console.time("file-upload");
+                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload/1.do", arrayBuffer).then(value => {
+                                debugger
+                                console.timeEnd("file-upload");
+                            });
+                        };
+                        reader.readAsArrayBuffer(file);
+                    });
+                }
+            },
         },
         activated() {
 
@@ -1183,5 +1225,26 @@
         left: 0px;
         top: 0px;
         z-index: 0 !important;
+    }
+
+    .btn-control2 {
+        text-align: center;
+        font: bold 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        background-color: #3386c0;
+        color: #fff;
+        position: absolute;
+        top: 20px;
+        left: 40%;
+        border: none;
+        width: 152px;
+        margin-left: -100px;
+        display: block;
+        cursor: pointer;
+        padding: 10px 20px;
+        border-radius: 3px;
+    }
+
+    .btn-control2:hover {
+        background-color: #4ea0da;
     }
 </style>
