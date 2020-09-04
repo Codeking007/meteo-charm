@@ -42,6 +42,13 @@ module.exports = {
                     "^/thor": "",
                 }
             },
+            '/boot-test-standard-ssm': {
+                target: 'http://localhost:8080',
+                changOrigin: true,
+                pathRewrite: {
+                    "^/boot-test-standard-ssm": "",
+                }
+            },
         },
     },
     chainWebpack: config => {
