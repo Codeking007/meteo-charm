@@ -1194,7 +1194,14 @@
                             let arrayBuffer: ArrayBuffer = (e.target as any).result;
                             console.log(arrayBuffer);
                             console.time("file-upload");
-                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload/1.do", arrayBuffer).then(value => {
+
+                            /*const re = new Float32Array(30000000);
+                            const dv = new DataView(re.buffer);
+                            for (let m = 0; m < re.length; m++) {
+                                dv.setFloat32(m * 4, m);
+                            }*/
+
+                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload/1.do", re).then(value => {
                                 debugger
                                 console.timeEnd("file-upload");
                             });
