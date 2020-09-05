@@ -1201,7 +1201,7 @@
                                 dv.setFloat32(m * 4, m);
                             }*/
 
-                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload/1.do", re).then(value => {
+                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload1/1.do", arrayBuffer).then(value => {
                                 debugger
                                 console.timeEnd("file-upload");
                             });
