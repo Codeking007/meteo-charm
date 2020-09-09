@@ -3,7 +3,8 @@
         <div id="map"></div>
         <canvas id="isolineText"></canvas>
         <label class="ui_button ui_button_primary btn-control2" for="xFile">上传文件</label>
-        <form><input type="file" id="xFile" name="file1" style="position:absolute;clip:rect(0 0 0 0);" @change="file2Xce($event)"></form>
+        <form><input type="file" id="xFile" name="file1" style="position:absolute;clip:rect(0 0 0 0);"
+                     @change="file2Xce($event)"></form>
     </div>
 </template>
 <script lang="ts">
@@ -346,7 +347,7 @@
             let shade = new Shade(map.map);
             shade.setColor(cAt0);
             shade.show();
-            shade.load(urlAt0).then((meteo:any) => {
+            shade.load(urlAt0).then((meteo: any) => {
                 shade.loadMeteo(meteo, {computeAsVector: [false, false]}, null);
             });
 
@@ -1195,13 +1196,13 @@
                             console.log(arrayBuffer);
                             console.time("file-upload");
 
-                            /*const re = new Float32Array(30000000);
+                            const re = new Float32Array(10);
                             const dv = new DataView(re.buffer);
                             for (let m = 0; m < re.length; m++) {
                                 dv.setFloat32(m * 4, m);
-                            }*/
-
-                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload/1.do", re).then(value => {
+                            }
+                            let testStr: string | null | undefined = "";
+                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload/1-" + testStr + ".do", re).then(value => {
                                 debugger
                                 console.timeEnd("file-upload");
                             });
