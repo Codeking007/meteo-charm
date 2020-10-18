@@ -1,5 +1,5 @@
 module.exports = {
-    baseUrl: process.env.NODE_ENV === 'production' ? './' : '/',
+    // baseUrl: process.env.NODE_ENV === 'production' ? './' : '/',
     productionSourceMap: false,
     // devServer:{type:Object} 3个属性host,port,https
     // 它支持webPack-dev-server的所有选项
