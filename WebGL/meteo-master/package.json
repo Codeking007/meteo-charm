@@ -13,28 +13,28 @@
   },
   "dependencies": {
     "@turf/turf": "^5.1.6",
-    "core-js": "^2.6.5",
-    "gl-matrix": "^3.0.0",
-    "lodash": "^4.17.11",
-    "mapbox-gl": "^1.5.0",
-    "vue": "^2.6.6",
-    "vue-class-component": "^6.0.0",
-    "vue-property-decorator": "^8.0.0",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "core-js": "^3.6.5",
+    "gl-matrix": "^3.3.0",
+    "lodash": "^4.17.20",
+    "mapbox-gl": "^1.12.0",
+    "vue": "^2.6.12",
+    "vue-class-component": "^7.2.6",
+    "vue-property-decorator": "^9.0.2",
+    "vue-router": "^3.4.7",
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.5.0",
-    "@vue/cli-plugin-typescript": "^3.5.0",
-    "@vue/cli-service": "^3.5.0",
-    "less": "^3.0.4",
-    "less-loader": "^4.1.0",
-    "typescript": "^3.2.1",
-    "vue-template-compiler": "^2.5.21",
-    "@types/mapbox-gl": "^1.5.2",
-    "@types/gl-matrix": "^2.4.5",
+    "@vue/cli-plugin-babel": "^4.5.7",
+    "@vue/cli-plugin-typescript": "^4.5.7",
+    "@vue/cli-service": "^4.5.7",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.2",
+    "typescript": "^4.0.3",
+    "vue-template-compiler": "^2.6.12",
+    "@types/mapbox-gl": "^1.12.5",
+    "@types/gl-matrix": "^3.2.0",
     "webpack-glsl-loader": "^1.0.1",
-    "@types/lodash": "^4.14.123",
-    "axios": "^0.18.0"
+    "@types/lodash": "^4.14.162",
+    "axios": "^0.20.0"
   }
 }
