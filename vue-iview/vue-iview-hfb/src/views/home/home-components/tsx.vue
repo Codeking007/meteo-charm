@@ -11,16 +11,59 @@ export default Vue.extend({
   components: {},
   data() {
     return {
-      berthPorts: [
-        {name: "AMSTERDAM", time: new Date()},
+      columns1: [
+        {
+          title: 'Name',
+          key: 'name'
+        },
+        {
+          title: 'Age',
+          key: 'age'
+        },
+        {
+          title: 'Address',
+          key: 'address'
+        }
       ],
+      data1: [
+        {
+          name: 'John Brown',
+          age: 18,
+          address: 'New York No. 1 Lake Park',
+          date: '2016-10-03'
+        },
+        {
+          name: 'Jim Green',
+          age: 24,
+          address: 'London No. 1 Lake Park',
+          date: '2016-10-01'
+        },
+        {
+          name: 'Joe Black',
+          age: 30,
+          address: 'Sydney No. 1 Lake Park',
+          date: '2016-10-02'
+        },
+        {
+          name: 'Jon Snow',
+          age: 26,
+          address: 'Ottawa No. 2 Lake Park',
+          date: '2016-10-04'
+        }
+      ]
     }
   },
   render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
+    /*return <div class="red">
+      <i-button type="info" percent="80">tsx</i-button>
+    </div>*/
+
+    /*const Tag=`h1`;
+    return <Tag>111</Tag>*/
+
+    let MyTable=`<i-table columns={this.columns1} data={this.data1}/>`;
     return (
-        <div class="red">
-          <i-button type="info" percent="80">tsx</i-button>
-        </div>
+        <i-table columns={this.columns1} data={this.data1}/>
     )
   },
   mounted() {
