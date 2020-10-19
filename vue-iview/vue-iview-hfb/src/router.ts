@@ -11,6 +11,7 @@ const router: Router = new Router({
 
 // 跳转路由页面权限控制，暂不需要
 router.beforeEach((to, from, next) => {
+    console.log(from.fullPath + " => " + to.fullPath);
     next();
     /*if ((!to.meta) || to.meta.requiresAuth !== false) {
         Security.auth(to.meta ? to.meta.auth : null).then(value => {

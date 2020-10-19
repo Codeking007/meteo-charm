@@ -8,7 +8,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import service from "./service";
 
 export default Vue.extend({
   name: 'app',
@@ -23,8 +22,8 @@ export default Vue.extend({
   },
   methods: {
     init() {
-      this.$store.state.um.pageOpenedList = [];
-      this.$router.push({path: "/home"});
+      // this.$store.state.um.pageOpenedList = [];
+      // this.$router.push({path: "/home"});
     },
   }
 });
@@ -34,13 +33,12 @@ export default Vue.extend({
 html, body {
   width: 100%;
   height: 100%;
-  background: #000000;
+  //background: #000000;
   overflow: hidden;
 }
 
 #app {
-  height: 100%;
   width: 100%;
-  background-color: #1d2536;
+  height: 100%;
 }
 </style>

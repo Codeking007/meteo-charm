@@ -1,10 +1,10 @@
 import {RouteConfig} from "vue-router";
-import service from "@/views/home/service/index.vue";
-import shipDetail from "@/views/home/service/detail/ship-detail.vue";
+// import service from "@/views/home/service/index.vue";
+// import shipDetail from "@/views/home/service/detail/ship-detail.vue";
 
 const menu: Array<RouteConfig> = [];
 menu.push(
-    {
+/*    {
         path: 'service',
         name: 'service',
         meta: {requiresAuth: true, auth: 'service', title: '服务列表'},
@@ -17,7 +17,7 @@ menu.push(
                 component: shipDetail,
             },
         ]
-    },
+    },*/
 );
 
 export default menu;
