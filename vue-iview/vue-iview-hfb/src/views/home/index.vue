@@ -8,8 +8,8 @@
 <script lang="ts">
 import Vue from "vue"
 import HomeMap from "../../components/map/index.vue"
-import Item from "./home-components/aa.vue";
-import Bbb from "./home-components/bb.vue";
+import Item from "./home-components/jsx.vue";
+import Bbb from "./home-components/tsx.vue";
 import service from "@/service"
 import dolphin from "@/components/dolphin";
 // import tsxTest from "@/views/home/home-components/tsx-test";

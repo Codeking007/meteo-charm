@@ -1,6 +1,9 @@
 <!--fixme 现在是tsx，不是ts-->
 <script lang="tsx">
-import Vue from "vue"
+import Vue, {CreateElement, RenderContext} from "vue"
+import {testButton, testCircle} from "./TsxTest";
+import {DefaultProps} from "vue/types/options";
+import {VNode} from "vue/types/vnode";
 
 export default Vue.extend({
   // functional: true,
@@ -13,11 +16,10 @@ export default Vue.extend({
       ],
     }
   },
-  render(h, context) {
+  render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
     return (
         <div class="red">
-          <Button type="info">Info</Button>
-          ccc
+          <i-button type="info" percent="80">tsx</i-button>
         </div>
     )
   },

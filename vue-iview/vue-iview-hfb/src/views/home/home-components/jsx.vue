@@ -1,11 +1,11 @@
-<script lang="tsx">
+<script lang="jsx">
 export default {
   // functional: true,
   name: "item",
   render(h, context) {
     return (
         <div class="red">
-          91
+          <i-button type="info">jsx</i-button>
         </div>
     )
   }
