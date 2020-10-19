@@ -1202,7 +1202,7 @@
                                 dv.setFloat32(m * 4, m);
                             }
                             let testStr: string | null | undefined = "";
-                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload/1-" + testStr + ".do", re).then(value => {
+                            this.postOnly("boot-test-standard-ssm/meteo-stream/upload/1-" + testStr + ".do", /*re*/arrayBuffer).then(value => {
                                 debugger
                                 console.timeEnd("file-upload");
                             });

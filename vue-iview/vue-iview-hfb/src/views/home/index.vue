@@ -1,28 +1,26 @@
 <template>
   <div class="home">
-    <Button>Default</Button>
-    <Button type="primary">Primary</Button>
-    <Button type="dashed">Dashed</Button>
-    <Button type="text">Text</Button>
-    <br><br>
-    <Button type="info">Info</Button>
-    <Button type="success">Success</Button>
-    <Button type="warning">Warning</Button>
-    <Button type="error">Error</Button>
+    <Item :data=this.berthPorts></Item>
+    <Bbb :data=this.berthPorts></Bbb>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue"
 import HomeMap from "../../components/map/index.vue"
-
+import Item from "./home-components/aa.vue";
+import Bbb from "./home-components/bb.vue";
 import service from "@/service"
 import dolphin from "@/components/dolphin";
+// import tsxTest from "@/views/home/home-components/tsx-test";
 
 export default Vue.extend({
+  // functional: true,
   name: "",
   components: {
     HomeMap,
+    Item,
+    Bbb
   },
   data() {
     return {
