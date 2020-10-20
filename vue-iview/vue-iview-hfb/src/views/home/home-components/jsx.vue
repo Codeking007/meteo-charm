@@ -108,8 +108,7 @@ export default {
           <div className="red">
             <i-button type={"error"} onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
             <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加 on-input={() => {}} 解决 让他的input有事件就不会报错了 onInput={() => {}}` </div>
-            <i-form model={this.formItem} onInput={() => {
-            }} label-width={150}>
+            <i-form model={this.formItem} onInput={() => {}} label-width={150}>
               <form-item label={"label宽度为150px"}>
                 <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
               </form-item>

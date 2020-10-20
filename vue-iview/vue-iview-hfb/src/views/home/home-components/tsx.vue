@@ -114,17 +114,26 @@ export default Vue.extend({
     // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
     let hText = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
+    const data = {
+      props: {
+        model: this.formItem,
+        "label-width": 170,
+      },
+    };
     return (
         <div>
           <div className="red">
-            <i-button type="info" onClick={this.initUser1}>{this.ownTag + ":" + this.num+":"+this.formItem.message}</i-button>
-            <div>i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined
-              临时解决 : 可以在 i-form上加 on-input={()=>{}} 解决 让他的input有事件就不会报错了</div>
-            <i-form model={this.formItem} onInput={()=>{}} label-width={80} >
-              <form-item label="Input">
-                <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}>
-
-                </i-input>
+            <i-button type={"info"} onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
+            <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加 on-input={() => {}} 解决 让他的input有事件就不会报错了 onInput={() => {}}` </div>
+            <i-form model={this.formItem} onInput={() => {}} label-width={150}>
+              <form-item label={"label宽度为150px"}>
+                <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
+              </form-item>
+            </i-form>
+            <div>如果通过「配置render()的第一个参数CreateElement中的参数data:VNodeData时」，并且把model放到VNodeData中的话，就可以不配置input事件了</div>
+            <i-form {...data}>
+              <form-item label={"label宽度为170px"}>
+                <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
               </form-item>
             </i-form>
           </div>
