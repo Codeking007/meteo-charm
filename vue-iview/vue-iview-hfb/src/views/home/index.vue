@@ -1,29 +1,29 @@
 <template>
   <div class="home">
-    <Item :data=this.berthPorts></Item>
-    <Bbb :data=this.berthPorts></Bbb>
+    <jsx-template :hSize="this.hSize" :data=this.berthPorts></jsx-template>
+    <tsx-template :hSize="this.hSize"></tsx-template>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue"
 import HomeMap from "../../components/map/index.vue"
-import Item from "./home-components/jsx.vue";
-import Bbb from "./home-components/tsx.vue";
+import JsxTemplate from "./home-components/jsx.vue";
+import TsxTemplate from "./home-components/tsx.vue";
 import service from "@/service"
 import dolphin from "@/components/dolphin";
-// import tsxTest from "@/views/home/home-components/tsx-test";
 
 export default Vue.extend({
   // functional: true,
   name: "",
   components: {
     HomeMap,
-    Item,
-    Bbb
+    JsxTemplate,
+    TsxTemplate
   },
   data() {
     return {
+      hSize: 2,
       berthPorts: [
         {name: "AMSTERDAM", time: new Date()},
       ],

@@ -6,9 +6,16 @@ import {DefaultProps} from "vue/types/options";
 import {VNode} from "vue/types/vnode";
 
 export default Vue.extend({
+  // todo
   // functional: true,
-  name: "bbb",
+  name: "tsx-template",
   components: {},
+  props: {
+    hSize: {
+      type: Number,
+      default: 1
+    }
+  },
   data() {
     return {
       columns1: [
@@ -61,10 +68,55 @@ export default Vue.extend({
     /*const Tag=`h1`;
     return <Tag>111</Tag>*/
 
-    let MyTable=`<i-table columns={this.columns1} data={this.data1}/>`;
+    /*return (
+        <i-table columns={this.columns1} data={this.data1}>
+
+        </i-table>
+    );*/
+
+    /*let hText = `<h${this.hSize}>${this.columns1[0].key}</h${this.hSize}>`;
+    // let hText = "<h" + this.hSize + ">" + this.columns1[0].key + "</h" + this.hSize + ">";
     return (
-        <i-table columns={this.columns1} data={this.data1}/>
-    )
+        <div domPropsInnerHTML={hText}>
+
+        </div>
+    );*/
+
+    /*const inputAttrs = {
+      type: 'email',
+      placeholder: 'Enter your email'
+    }
+    return <input {...{ attrs: inputAttrs }} />*/
+
+
+    /*const inputAttrs = {
+      shape: "circle",
+      type: "info",
+      percent: "80"
+    }
+    return <div class="red">
+      <i-button {...{attrs: inputAttrs}} >tsx</i-button>
+    </div>*/
+
+
+    let hText = `
+    <div class="red">
+      <i-button vModel=${{inputAttrs}} >tsx</i-button>
+    </div>
+    `;
+
+    return (
+        <div domPropsInnerHTML={hText}>
+
+        </div>
+    );
+
+    // let hText = `<i-table columns={this.columns1} data={this.data1} ></i-table>`;
+    // let hText = "<i-table columns={" + this.columns1 + "} data={" + this.data1 + "} ></i-table>";
+
+
+
+
   },
   mounted() {
     this.initUser();
