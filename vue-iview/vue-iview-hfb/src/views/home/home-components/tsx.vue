@@ -18,6 +18,11 @@ export default Vue.extend({
   },
   data() {
     return {
+      ownTag: "tsx",
+      num: 0,
+      formItem: {
+        message: '',
+      },
       columns1: [
         {
           title: 'Name',
@@ -98,28 +103,41 @@ export default Vue.extend({
       <i-button {...{attrs: inputAttrs}} >tsx</i-button>
     </div>*/
 
+    /*const on = {
+      click: this.initUser1(),
+    }*/
 
-    let hText = `
-    <div class="red">
-      <i-button vModel=${{inputAttrs}} >tsx</i-button>
-    </div>
-    `;
+    /*return <div class="red">
+      <i-button type="info" onClick={this.initUser1} percent="80">{this.ownTag + ":" + this.num}</i-button>
+    </div>*/
 
+    // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
+    // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
+    let hText = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
     return (
-        <div domPropsInnerHTML={hText}>
+        <div>
+          <div className="red">
+            <i-button type="info" onClick={this.initUser1}>{this.ownTag + ":" + this.num+":"+this.formItem.message}</i-button>
+            <div>i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined
+              临时解决 : 可以在 i-form上加 on-input={()=>{}} 解决 让他的input有事件就不会报错了</div>
+            <i-form model={this.formItem} onInput={()=>{}} label-width={80} >
+              <form-item label="Input">
+                <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}>
 
+                </i-input>
+              </form-item>
+            </i-form>
+          </div>
+          <div domPropsInnerHTML={hText}>
+
+          </div>
         </div>
     );
-
-    // let hText = `<i-table columns={this.columns1} data={this.data1} ></i-table>`;
-    // let hText = "<i-table columns={" + this.columns1 + "} data={" + this.data1 + "} ></i-table>";
-
 
 
 
   },
   mounted() {
-    this.initUser();
     this.$nextTick(() => {
 
     });
@@ -130,8 +148,9 @@ export default Vue.extend({
     });
   },
   methods: {
-    initUser() {
-
+    initUser1(content) {
+      console.log(this.ownTag + ":" + this.num);
+      this.num++;
     },
   },
   computed: {},

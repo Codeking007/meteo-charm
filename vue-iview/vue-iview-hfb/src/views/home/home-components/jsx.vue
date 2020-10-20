@@ -1,4 +1,6 @@
 <script lang="jsx">
+import {CreateElement} from "vue";
+
 export default {
   // todo
   // functional: true,
@@ -12,6 +14,11 @@ export default {
   },
   data() {
     return {
+      ownTag: "jsx",
+      num: 0,
+      formItem: {
+        message: '',
+      },
       columns1: [
         {
           title: 'Name',
@@ -68,48 +75,65 @@ export default {
         </i-table>
     );*/
 
-    /*let hText = `<h${this.hSize}>${this.columns1[0].key}</h${this.hSize}>`;
-    // let hText = "<h" + this.hSize + ">" + this.columns1[0].key + "</h" + this.hSize + ">";
-    return (
-        <div domPropsInnerHTML={hText}>
-
-        </div>
-    );*/
-
     /*const inputAttrs = {
       type: 'email',
       placeholder: 'Enter your email'
     }
     return <input {...{ attrs: inputAttrs }} />*/
 
-
-    const inputAttrs = {
+    /*const inputAttrs = {
       shape: "circle",
       type: "info",
       percent: "80"
     }
     return <div class="red">
       <i-button {...{attrs: inputAttrs}} >jsx</i-button>
-    </div>
+    </div>*/
 
+    /*return <div class="red">
+      <i-button type="info" onClick={this.initUser1} percent="80">{this.ownTag + ":" + this.num}</i-button>
+    </div>*/
 
-    let hText = `
-    <div class="red">
-      <i-button vModel=${{inputAttrs}} >jsx</i-button>
-    </div>
-    `;
-
+    // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
+    // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
+    let hText = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
+    const data = {
+      props: {
+        model: this.formItem,
+        "label-width": 170,
+      },
+    };
     return (
-        <div domPropsInnerHTML={hText}>
+        <div>
+          <div className="red">
+            <i-button type={"error"} onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
+            <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加 on-input={() => {}} 解决 让他的input有事件就不会报错了 onInput={() => {}}` </div>
+            <i-form model={this.formItem} onInput={() => {
+            }} label-width={150}>
+              <form-item label={"label宽度为150px"}>
+                <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
+              </form-item>
+            </i-form>
+            <div>如果通过「配置render()的第一个参数CreateElement中的参数data:VNodeData时」，并且把model放到VNodeData中的话，就可以不配置input事件了</div>
+            <i-form {...data}>
+              <form-item label={"label宽度为170px"}>
+                <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
+              </form-item>
+            </i-form>
+          </div>
+          <div domPropsInnerHTML={hText}>
 
+          </div>
         </div>
     );
 
-    // let hText = `<i-table columns={this.columns1} data={this.data1} ></i-table>`;
-    // let hText = "<i-table columns={" + this.columns1 + "} data={" + this.data1 + "} ></i-table>";
 
-
-
-  }
+  },
+  methods: {
+    initUser1(content) {
+      console.log(this.ownTag + ":" + this.num);
+      this.num++;
+    },
+  },
 }
 </script>
