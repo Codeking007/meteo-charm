@@ -94,9 +94,24 @@ export default {
       <i-button type="info" onClick={this.initUser1} percent="80">{this.ownTag + ":" + this.num}</i-button>
     </div>*/
 
+    const buttonNodeData = {
+      attrs: {
+
+      },
+      on: {
+        click: () => {
+          this.initUser1();
+          console.log('buttonNodeData=>click')
+        }
+      },
+      props: {
+        type: "info"
+      },
+    };
     // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
-    let hText = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
+    let hText = `<i-button ${{...buttonNodeData}}>${this.ownTag + ":" + this.num}</i-button>`;
+    // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
     const data = {
       props: {
         model: this.formItem,
@@ -107,6 +122,7 @@ export default {
         <div>
           <div className="red">
             <i-button type={"error"} onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
+            <i-button {...buttonNodeData}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
             <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加 on-input={() => {}} 解决 让他的input有事件就不会报错了 onInput={() => {}}` </div>
             <i-form model={this.formItem} onInput={() => {}} label-width={150}>
               <form-item label={"label宽度为150px"}>

@@ -1,6 +1,6 @@
 <!--fixme 现在是tsx，不是ts-->
 <script lang="tsx">
-import Vue, {CreateElement, RenderContext} from "vue"
+import Vue, {CreateElement, RenderContext, VNodeData} from "vue"
 import {testButton, testCircle} from "./TsxTest";
 import {DefaultProps} from "vue/types/options";
 import {VNode} from "vue/types/vnode";
@@ -113,8 +113,9 @@ export default Vue.extend({
 
     // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
-    let hText = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
-    const data = {
+    let hText:string = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
+    // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
+    const data: VNodeData = {
       props: {
         model: this.formItem,
         "label-width": 170,
