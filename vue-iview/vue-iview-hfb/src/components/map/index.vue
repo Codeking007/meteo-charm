@@ -7,8 +7,8 @@
 <script lang="ts">
 import Vue from "vue"
 // import mapData from "@/assets/map/map.ts";
-import mapboxgl from "mapbox-gl";
-import 'mapbox-gl/dist/mapbox-gl.css';
+// import mapboxgl from "mapbox-gl";
+// import 'mapbox-gl/dist/mapbox-gl.css';
 
 export default Vue.extend({
   name: "",

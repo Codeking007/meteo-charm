@@ -1,5 +1,6 @@
 <script lang="jsx">
 import {CreateElement} from "vue";
+import * as Babel from "@babel/core";
 
 export default {
   // todo
@@ -108,9 +109,18 @@ export default {
         type: "info"
       },
     };
-    // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
+    let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
-    let hText = `<i-button ${{...buttonNodeData}}>${this.ownTag + ":" + this.num}</i-button>`;
+    let str = '(hSize,ownTag,num,initUser1) => `<h${hSize} >${ownTag + ":" + num}</h${hSize}>`';
+    let func = eval.call(null, str);
+
+    let hButton=`<i-button ${{...buttonNodeData}}>${this.ownTag + ":" + this.num}</i-button>`;
+    let strButton = '(buttonNodeData,ownTag,num) => `<i-button ${{...buttonNodeData}}>${ownTag + ":" + num}</i-button>`';
+    let funcButton = eval.call(null, strButton);
+    debugger
+    let transform = Babel.transform(hText);
+    console.log(transform)
+    debugger
     // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
     const data = {
       props: {
@@ -139,6 +149,15 @@ export default {
           <div domPropsInnerHTML={hText}>
 
           </div>
+          <div domPropsInnerHTML={func(this.hSize,this.ownTag,this.num,this.initUser1)}>
+
+          </div>
+          <div domPropsInnerHTML={hButton}>
+
+          </div>
+          <div domPropsInnerHTML={funcButton(buttonNodeData,this.ownTag,this.num)}>
+
+          </div>
         </div>
     );
 
@@ -148,6 +167,7 @@ export default {
     initUser1(content) {
       console.log(this.ownTag + ":" + this.num);
       this.num++;
+      return 123;
     },
   },
 }

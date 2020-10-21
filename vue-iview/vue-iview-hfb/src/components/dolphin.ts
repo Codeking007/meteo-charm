@@ -1,4 +1,4 @@
-import * as turf from "@turf/turf";
+// import * as turf from "@turf/turf";
 
 export default class {
     // 时间戳转换成utc时间显示，数据库里是时间戳；
