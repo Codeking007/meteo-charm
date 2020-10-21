@@ -18,6 +18,17 @@ export default Vue.extend({
   },
   data() {
     return {
+      renderTemplate: {
+        buttonIndex: 0,
+        buttonTemplate: [
+          {
+            tag: <div className="red">
+              <i-button type="info" percent="80">tsx</i-button>
+            </div>,
+            data: null,
+          }
+        ],
+      },
       ownTag: "tsx",
       num: 0,
       formItem: {
@@ -62,13 +73,23 @@ export default Vue.extend({
           address: 'Ottawa No. 2 Lake Park',
           date: '2016-10-04'
         }
-      ]
+      ],
+      id: 0,
+      tests: {
+        0: "<div><span>第一道题</span></div>",
+        1: `<div><section>第二道题</section></div>`,
+        2: <div><p>第三道题</p></div>
+      }
     }
   },
   render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
-    /*return <div class="red">
-      <i-button type="info" percent="80">tsx</i-button>
-    </div>*/
+    return (
+        <div>
+          <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+          {this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag}
+        </div>
+    );
+
 
     /*const Tag=`h1`;
     return <Tag>111</Tag>*/
@@ -113,7 +134,7 @@ export default Vue.extend({
 
     // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
-    let hText:string = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
+    let hText: string = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
     // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
     const data: VNodeData = {
       props: {
@@ -124,9 +145,15 @@ export default Vue.extend({
     return (
         <div>
           <div className="red">
-            <i-button type={"info"} onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
-            <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加 on-input={() => {}} 解决 让他的input有事件就不会报错了 onInput={() => {}}` </div>
-            <i-form model={this.formItem} onInput={() => {}} label-width={150}>
+            <i-button type={"info"}
+                      onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
+            <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加
+              on-input={() => {
+              }} 解决 让他的input有事件就不会报错了 onInput={() => {
+              }}`
+            </div>
+            <i-form model={this.formItem} onInput={() => {
+            }} label-width={150}>
               <form-item label={"label宽度为150px"}>
                 <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
               </form-item>
@@ -141,9 +168,11 @@ export default Vue.extend({
           <div domPropsInnerHTML={hText}>
 
           </div>
+          <div class="red">
+            {this.tests[this.id]}
+          </div>
         </div>
     );
-
 
 
   },
@@ -158,9 +187,13 @@ export default Vue.extend({
     });
   },
   methods: {
+    changeButton() {
+      this.renderTemplate.buttonIndex = this.renderTemplate.buttonIndex % this.renderTemplate.buttonTemplate.length;
+    },
     initUser1(content) {
       console.log(this.ownTag + ":" + this.num);
       this.num++;
+      this.id = (this.id + 1) % 3;
     },
   },
   computed: {},

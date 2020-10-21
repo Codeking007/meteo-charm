@@ -96,9 +96,7 @@ export default {
     </div>*/
 
     const buttonNodeData = {
-      attrs: {
-
-      },
+      attrs: {},
       on: {
         click: () => {
           this.initUser1();
@@ -114,13 +112,13 @@ export default {
     let str = '(hSize,ownTag,num,initUser1) => `<h${hSize} >${ownTag + ":" + num}</h${hSize}>`';
     let func = eval.call(null, str);
 
-    let hButton=`<i-button ${{...buttonNodeData}}>${this.ownTag + ":" + this.num}</i-button>`;
+    let hButton = `<i-button ${{...buttonNodeData}}>${this.ownTag + ":" + this.num}</i-button>`;
     let strButton = '(buttonNodeData,ownTag,num) => `<i-button ${{...buttonNodeData}}>${ownTag + ":" + num}</i-button>`';
     let funcButton = eval.call(null, strButton);
-    debugger
-    let transform = Babel.transform(hText);
-    console.log(transform)
-    debugger
+
+    // let transform = Babel.transform(hText);
+    // console.log(transform)
+
     // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
     const data = {
       props: {
@@ -131,10 +129,16 @@ export default {
     return (
         <div>
           <div className="red">
-            <i-button type={"error"} onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
+            <i-button type={"error"}
+                      onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
             <i-button {...buttonNodeData}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
-            <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加 on-input={() => {}} 解决 让他的input有事件就不会报错了 onInput={() => {}}` </div>
-            <i-form model={this.formItem} onInput={() => {}} label-width={150}>
+            <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加
+              on-input={() => {
+              }} 解决 让他的input有事件就不会报错了 onInput={() => {
+              }}`
+            </div>
+            <i-form model={this.formItem} onInput={() => {
+            }} label-width={150}>
               <form-item label={"label宽度为150px"}>
                 <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
               </form-item>
@@ -149,13 +153,13 @@ export default {
           <div domPropsInnerHTML={hText}>
 
           </div>
-          <div domPropsInnerHTML={func(this.hSize,this.ownTag,this.num,this.initUser1)}>
+          <div domPropsInnerHTML={func(this.hSize, this.ownTag, this.num, this.initUser1)}>
 
           </div>
           <div domPropsInnerHTML={hButton}>
 
           </div>
-          <div domPropsInnerHTML={funcButton(buttonNodeData,this.ownTag,this.num)}>
+          <div domPropsInnerHTML={funcButton(buttonNodeData, this.ownTag, this.num)}>
 
           </div>
         </div>
