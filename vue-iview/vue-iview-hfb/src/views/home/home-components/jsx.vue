@@ -122,11 +122,11 @@ export default {
     // var Component = Babel.transform(htmlFromApi, {presets: ["jsx"]}).code;
     // return <div>{eval(Component)}</div>;
 
-    Babel.transform("this.initUser1();",{presets: ["react"]}, function(err, result) {
+    /*Babel.transform("this.initUser1();",{presets: ["react"]}, function(err, result) {
       debugger
       console.log(result);
       console.log(eval(result.code));
-    });
+    });*/
 
     // let transform = Babel.transform(hText);
     // console.log(transform)
