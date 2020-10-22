@@ -116,6 +116,18 @@ export default {
     let strButton = '(buttonNodeData,ownTag,num) => `<i-button ${{...buttonNodeData}}>${ownTag + ":" + num}</i-button>`';
     let funcButton = eval.call(null, strButton);
 
+    var Colors = {SUCCESS: "green", ALERT: "red"};
+    var htmlFromApi = '<div className="button-basics-example"><Button color={Colors.SUCCESS}>Save</Button><Button color={Colors.ALERT}>Delete</Button></div>';
+
+    // var Component = Babel.transform(htmlFromApi, {presets: ["jsx"]}).code;
+    // return <div>{eval(Component)}</div>;
+
+    Babel.transform("this.initUser1();",{presets: ["react"]}, function(err, result) {
+      debugger
+      console.log(result);
+      console.log(eval(result.code));
+    });
+
     // let transform = Babel.transform(hText);
     // console.log(transform)
 

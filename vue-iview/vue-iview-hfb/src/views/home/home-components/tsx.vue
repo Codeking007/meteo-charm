@@ -4,6 +4,8 @@ import Vue, {CreateElement, RenderContext, VNodeData} from "vue"
 import {testButton, testCircle} from "./TsxTest";
 import {DefaultProps} from "vue/types/options";
 import {VNode} from "vue/types/vnode";
+import { transform } from "@babel/core";
+import * as Babel from "@babel/core";
 
 export default Vue.extend({
   // todo
@@ -23,7 +25,7 @@ export default Vue.extend({
         buttonTemplate: [
           {
             tag: <div className="red">
-              <i-button type="info" percent="80">tsx</i-button>
+              <i-button type="error" percent="80">tsx</i-button>
             </div>,
             data: null,
           }
@@ -83,14 +85,6 @@ export default Vue.extend({
     }
   },
   render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
-    return (
-        <div>
-          <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
-          {this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag}
-        </div>
-    );
-
-
     /*const Tag=`h1`;
     return <Tag>111</Tag>*/
 
@@ -170,6 +164,10 @@ export default Vue.extend({
           </div>
           <div class="red">
             {this.tests[this.id]}
+          </div>
+          <div>
+            <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+            {this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag}
           </div>
         </div>
     );
