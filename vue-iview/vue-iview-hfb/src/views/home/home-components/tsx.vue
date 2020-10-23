@@ -7,6 +7,7 @@ import {VNode} from "vue/types/vnode";
 import { transform } from "@babel/core";
 import * as Babel from "@babel/core";
 
+
 export default Vue.extend({
   // todo
   // functional: true,
@@ -22,14 +23,7 @@ export default Vue.extend({
     return {
       renderTemplate: {
         buttonIndex: 0,
-        buttonTemplate: [
-          {
-            tag: <div className="red">
-              <i-button type="error" percent="80">tsx</i-button>
-            </div>,
-            data: null,
-          }
-        ],
+        buttonTemplate: [],
       },
       ownTag: "tsx",
       num: 0,
@@ -136,11 +130,11 @@ export default Vue.extend({
         "label-width": 170,
       },
     };
+
     return (
         <div>
           <div className="red">
-            <i-button type={"info"}
-                      onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
+            <i-button type={"info"} onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
             <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加
               on-input={() => {
               }} 解决 让他的input有事件就不会报错了 onInput={() => {
@@ -167,7 +161,7 @@ export default Vue.extend({
           </div>
           <div>
             <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
-            {this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag}
+            {this.renderTemplate.buttonTemplate.length>0?this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag:""}
           </div>
         </div>
     );
@@ -175,6 +169,7 @@ export default Vue.extend({
 
   },
   mounted() {
+    this.initRenderTemplate();
     this.$nextTick(() => {
 
     });
@@ -185,8 +180,23 @@ export default Vue.extend({
     });
   },
   methods: {
+    initRenderTemplate(){
+      this.renderTemplate={
+        buttonIndex: 1,
+        buttonTemplate: [
+          {
+            data: null,
+            tag: <i-button type="error" percent="80">绑定属性</i-button>
+          },
+          {
+            data: null,
+            tag: <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+          },
+        ],
+      };
+    },
     changeButton() {
-      this.renderTemplate.buttonIndex = this.renderTemplate.buttonIndex % this.renderTemplate.buttonTemplate.length;
+      this.renderTemplate.buttonIndex = (this.renderTemplate.buttonIndex+1) % this.renderTemplate.buttonTemplate.length;
     },
     initUser1(content) {
       console.log(this.ownTag + ":" + this.num);
