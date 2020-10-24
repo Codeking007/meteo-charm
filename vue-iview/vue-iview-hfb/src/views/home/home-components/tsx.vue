@@ -131,7 +131,7 @@ export default Vue.extend({
               <i-form model={this.formItem} onInput={() => {
               }} label-width={150}>
                 <form-item label={"label宽度为150px"}>
-                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
+                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."} />
                 </form-item>
               </i-form>
         },
@@ -141,7 +141,7 @@ export default Vue.extend({
           tag:
               <i-form {...formNodeData}>
                 <form-item label={"label宽度为170px"}>
-                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
+                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."} />
                 </form-item>
               </i-form>
         }
