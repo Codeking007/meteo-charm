@@ -1,13 +1,17 @@
 <template>
   <div class="home">
     <tsx-template :hSize="this.hSize"></tsx-template>
+    <jsx-jsx :hSize="this.hSize"></jsx-jsx>
+    <tsx-tsx :hSize="this.hSize"></tsx-tsx>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue"
 import HomeMap from "../../components/map/index.vue"
-import TsxTemplate from "./home-components/tsx.vue";
+import TsxTemplate from "@/views/home/home-components/tsx.vue";
+import JsxJsx from "@/views/home/home-components/JsxTest";
+import TsxTsx from "@/views/home/home-components/TsxTest";
 import service from "@/service"
 import dolphin from "@/components/dolphin";
 
@@ -16,7 +20,9 @@ export default Vue.extend({
   name: "",
   components: {
     HomeMap,
-    TsxTemplate
+    TsxTemplate,
+    JsxJsx,
+    TsxTsx
   },
   data() {
     return {

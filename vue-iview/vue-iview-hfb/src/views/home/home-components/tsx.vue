@@ -1,12 +1,8 @@
 <!--fixme 现在是tsx，不是ts-->
 <script lang="tsx">
 import Vue, {CreateElement, RenderContext, VNodeData} from "vue"
-import {ass} from "./TsxTest";
 import {DefaultProps} from "vue/types/options";
 import {ScopedSlot, VNode, VNodeDirective} from "vue/types/vnode";
-import {transform} from "@babel/core";
-import * as babel from "@babel/core";
-
 
 export default Vue.extend({
   // todo
@@ -32,81 +28,25 @@ export default Vue.extend({
       formItem: {
         message: '',
       },
-      id: 0,
-      tests: {
-        0: "<div><span>第一道题</span></div>",
-        1: `<div><section>第二道题</section></div>`,
-        2: <div><p>第三道题</p></div>
-      }
     }
   },
   render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
-    /*const Tag=`h1`;
-    return <Tag>111</Tag>*/
-
     // let hText = `<h${this.hSize} onClick="${this.initUser1}">${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
     let str = '(hSize,ownTag,num,initUser1) => `<h${hSize}>${ownTag + ":" + num}</h${hSize}>`';
     let func = eval.call(null, str);
 
-    const buttonNodeData = {
-      attrs: {},
-      on: {
-        click: () => {
-          this.initUser1();
-          console.log('buttonNodeData=>click')
-        }
-      },
-      props: {
-        type: "info"
-      },
-    };
-    // let hButton = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
-    let hButton = `<i-button ${{...buttonNodeData}}>${this.ownTag + ":" + this.num}</i-button>`;
-    let strButton = '(buttonNodeData,ownTag,num) => `<i-button ${{...buttonNodeData}}>${ownTag + ":" + num}</i-button>`';
-    let funcButton = eval.call(null, strButton);
-
     // 模板字符串的大括号内部，就是执行JavaScript代码
     // 如果执行完JavaScript代码后，大括号中的值不是字符串，将按照一般的规则转为字符串。比如，大括号中是一个对象，将默认调用对象的toString方法。
 
-    var Colors = {SUCCESS: "green", ALERT: "red"};
-    var htmlFromApi = '<div className="button-basics-example"><Button color={Colors.SUCCESS}>Save</Button><Button color={Colors.ALERT}>Delete</Button></div>';
-    // var Component = Babel.transform(htmlFromApi, {presets: ["jsx"]}).code;
-    // return <div>{eval(Component)}</div>;
-    /*Babel.transform("this.initUser1();",{presets: ["react"]}, function(err, result) {
-      debugger
-      console.log(result);
-      console.log(eval(result.code));
-    });*/
-
-    /*let transform = babel.transform("code", {
-      presets: ["@babel/preset-react"],
-    });
-    console.log(transform)*/
-
-    // let transform = Babel.transform(hText);
-    // console.log(transform)
-
     return (
         <div>
-
           <div domPropsInnerHTML={hText}>
 
           </div>
           <div domPropsInnerHTML={func(this.hSize, this.ownTag, this.num, this.initUser1)}>
 
           </div>
-          <div domPropsInnerHTML={hButton}>
-
-          </div>
-          <div domPropsInnerHTML={funcButton(buttonNodeData, this.ownTag, this.num)}>
-
-          </div>
-
-          <div class="red">
-            {this.tests[this.id]}
-          </div>
-
 
           <div>
             <i-button type={"info"}
@@ -214,7 +154,6 @@ export default Vue.extend({
     initUser1(content) {
       console.log(this.ownTag + ":" + this.num);
       this.num++;
-      this.id = (this.id + 1) % 3;
     },
   },
   computed: {},

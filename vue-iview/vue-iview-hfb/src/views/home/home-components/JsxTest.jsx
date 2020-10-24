@@ -1,9 +1,8 @@
 import Vue from "vue";
 
 export default Vue.extend({
-    // todo
     // functional: true,
-    name: "tsx-tsx",
+    name: "jsx-jsx",
     components: {},
     props: {
         hSize: {
@@ -36,8 +35,7 @@ export default Vue.extend({
         return (
             <div>
                 <div>
-                    <i-button type={"info"}
-                              onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+                    <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
                     {(this.renderTemplate.buttonIndex !== null && this.renderTemplate.buttonTemplate.length > 0) ? this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag : ""}
                 </div>
                 <br/>
