@@ -24,54 +24,14 @@ export default Vue.extend({
       renderTemplate: {
         buttonIndex: null,
         buttonTemplate: [],
-        formIndex:null,
-        formTemplate:[]
+        formIndex: null,
+        formTemplate: [],
       },
       ownTag: "tsx",
       num: 0,
       formItem: {
         message: '',
       },
-      columns1: [
-        {
-          title: 'Name',
-          key: 'name'
-        },
-        {
-          title: 'Age',
-          key: 'age'
-        },
-        {
-          title: 'Address',
-          key: 'address'
-        }
-      ],
-      data1: [
-        {
-          name: 'John Brown',
-          age: 18,
-          address: 'New York No. 1 Lake Park',
-          date: '2016-10-03'
-        },
-        {
-          name: 'Jim Green',
-          age: 24,
-          address: 'London No. 1 Lake Park',
-          date: '2016-10-01'
-        },
-        {
-          name: 'Joe Black',
-          age: 30,
-          address: 'Sydney No. 1 Lake Park',
-          date: '2016-10-02'
-        },
-        {
-          name: 'Jon Snow',
-          age: 26,
-          address: 'Ottawa No. 2 Lake Park',
-          date: '2016-10-04'
-        }
-      ],
       id: 0,
       tests: {
         0: "<div><span>第一道题</span></div>",
@@ -83,21 +43,6 @@ export default Vue.extend({
   render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
     /*const Tag=`h1`;
     return <Tag>111</Tag>*/
-
-    /*return (
-        <i-table columns={this.columns1} data={this.data1}>
-
-        </i-table>
-    );*/
-
-
-    /*let hText = `<h${this.hSize}>${this.columns1[0].key}</h${this.hSize}>`;
-    // let hText = "<h" + this.hSize + ">" + this.columns1[0].key + "</h" + this.hSize + ">";
-    return (
-        <div domPropsInnerHTML={hText}>
-
-        </div>
-    );*/
 
     // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
@@ -136,26 +81,19 @@ export default Vue.extend({
     // let transform = Babel.transform(hText);
     // console.log(transform)
 
-    // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
-    const data = {
-      props: {
-        model: this.formItem,
-        "label-width": 170,
-      },
-    };
-
-
 
     return (
         <div>
           <div>
-            <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
-            {(this.renderTemplate.buttonIndex!==null&&this.renderTemplate.buttonTemplate.length > 0) ? this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag : ""}
+            <i-button type={"info"}
+                      onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+            {(this.renderTemplate.buttonIndex !== null && this.renderTemplate.buttonTemplate.length > 0) ? this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag : ""}
           </div>
           <br/>
           <div>
-            <i-button type={"warning"} onClick={this.changeForm}>{this.ownTag + ":form表单:" + this.renderTemplate.formIndex+":"+this.formItem.message}</i-button>
-            {(this.renderTemplate.formIndex!==null&&this.renderTemplate.formTemplate.length > 0) ? this.renderTemplate.formTemplate[this.renderTemplate.formIndex].tag : ""}
+            <i-button type={"warning"}
+                      onClick={this.changeForm}>{this.ownTag + ":form表单:" + this.renderTemplate.formIndex + ":" + this.formItem.message}</i-button>
+            {(this.renderTemplate.formIndex !== null && this.renderTemplate.formTemplate.length > 0) ? this.renderTemplate.formTemplate[this.renderTemplate.formIndex].tag : ""}
           </div>
 
 
@@ -206,25 +144,26 @@ export default Vue.extend({
       };
       this.renderTemplate.buttonIndex = 0;
       this.renderTemplate.buttonTemplate = [
-          {
-            data: null,
-            tag: <i-button type="error" percent="80">绑定属性</i-button>
-          },
-          {
-            data: null,
-            // todo 这里有个bug，一开始初始化时，拿到的是this.renderTemplate.buttonIndex中的属性值0（本来是null的，是在上一行代码进行的初始化设置为0的），所以tag就拿到了值0，而不是值1.需要解决
-            // todo 说明在跳进来初始化tag时，是用的最开始的初始化值0，而不是同步更新的值1
-            // todo 难道需要先更新data的数据，然后再加载这个渲染模板？这样就能一开始就拿到最新的数值了
-            tag: <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
-          },
-          {
-            data: buttonNodeData,
-            // todo 这里有个bug，一开始初始化时，拿到的是this.renderTemplate.buttonIndex中的属性值0（本来是null的，是在上一行代码进行的初始化设置为0的），所以tag就拿到了值0，而不是值1.需要解决
-            // todo 说明在跳进来初始化tag时，是用的最开始的初始化值0，而不是同步更新的值1
-            // todo 难道需要先更新data的数据，然后再加载这个渲染模板？这样就能一开始就拿到最新的数值了
-            tag: <i-button {...buttonNodeData}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
-          }
-        ];
+        {
+          data: null,
+          tag: <i-button type="error" percent="80">绑定属性</i-button>
+        },
+        {
+          data: null,
+          // todo 这里有个bug，一开始初始化时，拿到的是this.renderTemplate.buttonIndex中的属性值0（本来是null的，是在上一行代码进行的初始化设置为0的），所以tag就拿到了值0，而不是值1.需要解决
+          // todo 说明在跳进来初始化tag时，是用的最开始的初始化值0，而不是同步更新的值1
+          // todo 难道需要先更新data的数据，然后再加载这个渲染模板？这样就能一开始就拿到最新的数值了
+          tag: <i-button type={"info"}
+                         onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+        },
+        {
+          data: buttonNodeData,
+          // todo 这里有个bug，一开始初始化时，拿到的是this.renderTemplate.buttonIndex中的属性值0（本来是null的，是在上一行代码进行的初始化设置为0的），所以tag就拿到了值0，而不是值1.需要解决
+          // todo 说明在跳进来初始化tag时，是用的最开始的初始化值0，而不是同步更新的值1
+          // todo 难道需要先更新data的数据，然后再加载这个渲染模板？这样就能一开始就拿到最新的数值了
+          tag: <i-button {...buttonNodeData}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+        }
+      ];
     },
     changeButton() {
       console.log("tsx:changeButton()")
@@ -244,7 +183,8 @@ export default Vue.extend({
           data: null,
           // fixme i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加 on-input={() => {}} 解决 让他的input有事件就不会报错了 onInput={() => {}}
           tag:
-              <i-form model={this.formItem} onInput={() => {}} label-width={150}>
+              <i-form model={this.formItem} onInput={() => {
+              }} label-width={150}>
                 <form-item label={"label宽度为150px"}>
                   <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
                 </form-item>
