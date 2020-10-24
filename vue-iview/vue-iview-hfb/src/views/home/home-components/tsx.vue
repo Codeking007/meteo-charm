@@ -5,7 +5,7 @@ import {ass} from "./TsxTest";
 import {DefaultProps} from "vue/types/options";
 import {ScopedSlot, VNode, VNodeDirective} from "vue/types/vnode";
 import {transform} from "@babel/core";
-import * as Babel from "@babel/core";
+import * as babel from "@babel/core";
 
 
 export default Vue.extend({
@@ -78,6 +78,11 @@ export default Vue.extend({
       console.log(result);
       console.log(eval(result.code));
     });*/
+
+    /*let transform = babel.transform("code", {
+      presets: ["@babel/preset-react"],
+    });
+    console.log(transform)*/
 
     // let transform = Babel.transform(hText);
     // console.log(transform)
