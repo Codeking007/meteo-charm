@@ -1,10 +1,10 @@
 <!--fixme 现在是tsx，不是ts-->
 <script lang="tsx">
 import Vue, {CreateElement, RenderContext, VNodeData} from "vue"
-import {testButton, testCircle} from "./TsxTest";
+import {ass} from "./TsxTest";
 import {DefaultProps} from "vue/types/options";
-import {VNode} from "vue/types/vnode";
-import { transform } from "@babel/core";
+import {ScopedSlot, VNode, VNodeDirective} from "vue/types/vnode";
+import {transform} from "@babel/core";
 import * as Babel from "@babel/core";
 
 
@@ -22,8 +22,10 @@ export default Vue.extend({
   data() {
     return {
       renderTemplate: {
-        buttonIndex: 0,
+        buttonIndex: null,
         buttonTemplate: [],
+        formIndex:null,
+        formTemplate:[]
       },
       ownTag: "tsx",
       num: 0,
@@ -88,6 +90,7 @@ export default Vue.extend({
         </i-table>
     );*/
 
+
     /*let hText = `<h${this.hSize}>${this.columns1[0].key}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + this.columns1[0].key + "</h" + this.hSize + ">";
     return (
@@ -96,72 +99,81 @@ export default Vue.extend({
         </div>
     );*/
 
-    /*const inputAttrs = {
-      type: 'email',
-      placeholder: 'Enter your email'
-    }
-    return <input {...{ attrs: inputAttrs }} />*/
-
-
-    /*const inputAttrs = {
-      shape: "circle",
-      type: "info",
-      percent: "80"
-    }
-    return <div class="red">
-      <i-button {...{attrs: inputAttrs}} >tsx</i-button>
-    </div>*/
-
-    /*const on = {
-      click: this.initUser1(),
-    }*/
-
-    /*return <div class="red">
-      <i-button type="info" onClick={this.initUser1} percent="80">{this.ownTag + ":" + this.num}</i-button>
-    </div>*/
-
     // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
     let hText: string = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
+    const buttonNodeData = {
+      attrs: {},
+      on: {
+        click: () => {
+          this.initUser1();
+          console.log('buttonNodeData=>click')
+        }
+      },
+      props: {
+        type: "info"
+      },
+    };
+    let str = '(hSize,ownTag,num,initUser1) => `<h${hSize} >${ownTag + ":" + num}</h${hSize}>`';
+    let func = eval.call(null, str);
+
+    let hButton = `<i-button ${{...buttonNodeData}}>${this.ownTag + ":" + this.num}</i-button>`;
+    let strButton = '(buttonNodeData,ownTag,num) => `<i-button ${{...buttonNodeData}}>${ownTag + ":" + num}</i-button>`';
+    let funcButton = eval.call(null, strButton);
+
+    var Colors = {SUCCESS: "green", ALERT: "red"};
+    var htmlFromApi = '<div className="button-basics-example"><Button color={Colors.SUCCESS}>Save</Button><Button color={Colors.ALERT}>Delete</Button></div>';
+
+    // var Component = Babel.transform(htmlFromApi, {presets: ["jsx"]}).code;
+    // return <div>{eval(Component)}</div>;
+
+    /*Babel.transform("this.initUser1();",{presets: ["react"]}, function(err, result) {
+      debugger
+      console.log(result);
+      console.log(eval(result.code));
+    });*/
+
+    // let transform = Babel.transform(hText);
+    // console.log(transform)
+
     // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
-    const data: VNodeData = {
+    const data = {
       props: {
         model: this.formItem,
         "label-width": 170,
       },
     };
 
+
+
     return (
         <div>
-          <div className="red">
-            <i-button type={"info"} onClick={this.initUser1}>{this.ownTag + ":" + this.num + ":" + this.formItem.message}</i-button>
-            <div>`i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加
-              on-input={() => {
-              }} 解决 让他的input有事件就不会报错了 onInput={() => {
-              }}`
-            </div>
-            <i-form model={this.formItem} onInput={() => {
-            }} label-width={150}>
-              <form-item label={"label宽度为150px"}>
-                <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
-              </form-item>
-            </i-form>
-            <div>如果通过「配置render()的第一个参数CreateElement中的参数data:VNodeData时」，并且把model放到VNodeData中的话，就可以不配置input事件了</div>
-            <i-form {...data}>
-              <form-item label={"label宽度为170px"}>
-                <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
-              </form-item>
-            </i-form>
+          <div>
+            <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+            {(this.renderTemplate.buttonIndex!==null&&this.renderTemplate.buttonTemplate.length > 0) ? this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag : ""}
           </div>
+          <br/>
+          <div>
+            <i-button type={"warning"} onClick={this.changeForm}>{this.ownTag + ":form表单:" + this.renderTemplate.formIndex+":"+this.formItem.message}</i-button>
+            {(this.renderTemplate.formIndex!==null&&this.renderTemplate.formTemplate.length > 0) ? this.renderTemplate.formTemplate[this.renderTemplate.formIndex].tag : ""}
+          </div>
+
+
           <div domPropsInnerHTML={hText}>
 
           </div>
+          <div domPropsInnerHTML={func(this.hSize, this.ownTag, this.num, this.initUser1)}>
+
+          </div>
+          <div domPropsInnerHTML={hButton}>
+
+          </div>
+          <div domPropsInnerHTML={funcButton(buttonNodeData, this.ownTag, this.num)}>
+
+          </div>
+
           <div class="red">
             {this.tests[this.id]}
-          </div>
-          <div>
-            <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
-            {this.renderTemplate.buttonTemplate.length>0?this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag:""}
           </div>
         </div>
     );
@@ -169,7 +181,8 @@ export default Vue.extend({
 
   },
   mounted() {
-    this.initRenderTemplate();
+    this.initButtonRenderTemplate();
+    this.initFormRenderTemplate();
     this.$nextTick(() => {
 
     });
@@ -180,23 +193,78 @@ export default Vue.extend({
     });
   },
   methods: {
-    initRenderTemplate(){
-      this.renderTemplate={
-        buttonIndex: 1,
-        buttonTemplate: [
+    initButtonRenderTemplate() {
+      let buttonNodeData: VNodeData = {
+        props: {
+          type: "success",
+        },
+        on: {
+          click: () => {
+            this.changeButton();
+          }
+        },
+      };
+      this.renderTemplate.buttonIndex = 0;
+      this.renderTemplate.buttonTemplate = [
           {
             data: null,
             tag: <i-button type="error" percent="80">绑定属性</i-button>
           },
           {
             data: null,
+            // todo 这里有个bug，一开始初始化时，拿到的是this.renderTemplate.buttonIndex中的属性值0（本来是null的，是在上一行代码进行的初始化设置为0的），所以tag就拿到了值0，而不是值1.需要解决
+            // todo 说明在跳进来初始化tag时，是用的最开始的初始化值0，而不是同步更新的值1
+            // todo 难道需要先更新data的数据，然后再加载这个渲染模板？这样就能一开始就拿到最新的数值了
             tag: <i-button type={"info"} onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
           },
-        ],
-      };
+          {
+            data: buttonNodeData,
+            // todo 这里有个bug，一开始初始化时，拿到的是this.renderTemplate.buttonIndex中的属性值0（本来是null的，是在上一行代码进行的初始化设置为0的），所以tag就拿到了值0，而不是值1.需要解决
+            // todo 说明在跳进来初始化tag时，是用的最开始的初始化值0，而不是同步更新的值1
+            // todo 难道需要先更新data的数据，然后再加载这个渲染模板？这样就能一开始就拿到最新的数值了
+            tag: <i-button {...buttonNodeData}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+          }
+        ];
     },
     changeButton() {
-      this.renderTemplate.buttonIndex = (this.renderTemplate.buttonIndex+1) % this.renderTemplate.buttonTemplate.length;
+      console.log("tsx:changeButton()")
+      this.renderTemplate.buttonIndex = (this.renderTemplate.buttonIndex + 1) % this.renderTemplate.buttonTemplate.length;
+    },
+    initFormRenderTemplate() {
+      // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
+      let formNodeData: VNodeData = {
+        props: {
+          model: this.formItem,
+          "label-width": 170,
+        },
+      };
+      this.renderTemplate.formIndex = 0;
+      this.renderTemplate.formTemplate = [
+        {
+          data: null,
+          // fixme i-form标签增加mode后报错： [Vue warn]: Invalid handler for event "input": got undefined临时解决 : 可以在 i-form上加 on-input={() => {}} 解决 让他的input有事件就不会报错了 onInput={() => {}}
+          tag:
+              <i-form model={this.formItem} onInput={() => {}} label-width={150}>
+                <form-item label={"label宽度为150px"}>
+                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
+                </form-item>
+              </i-form>
+        },
+        {
+          data: null,
+          // fixme 如果通过「配置render()的第一个参数CreateElement中的参数data:VNodeData时」，并且把model放到VNodeData中的话，就可以不配置input事件了
+          tag:
+              <i-form {...formNodeData}>
+                <form-item label={"label宽度为170px"}>
+                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}></i-input>
+                </form-item>
+              </i-form>
+        }
+      ];
+    },
+    changeForm() {
+      console.log("tsx:changeForm()")
+      this.renderTemplate.formIndex = (this.renderTemplate.formIndex + 1) % this.renderTemplate.formTemplate.length;
     },
     initUser1(content) {
       console.log(this.ownTag + ":" + this.num);

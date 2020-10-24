@@ -1,7 +1,4 @@
-export const testButton = <div class="red">
-    <i-button type="info" percent="80">tsx-button</i-button>
-</div>
-
-export const testCircle = <div class="red">
-    <i-circle percent="80">tsx-80</i-circle>
-</div>
+export const ass = {
+    data: null,
+    tag: <i-button type="error" percent="80">绑定属性</i-button>
+};

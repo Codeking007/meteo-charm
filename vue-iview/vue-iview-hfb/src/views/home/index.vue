@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <jsx-template :hSize="this.hSize" :data=this.berthPorts></jsx-template>
     <tsx-template :hSize="this.hSize"></tsx-template>
   </div>
 </template>
@@ -8,7 +7,6 @@
 <script lang="ts">
 import Vue from "vue"
 import HomeMap from "../../components/map/index.vue"
-import JsxTemplate from "./home-components/jsx.vue";
 import TsxTemplate from "./home-components/tsx.vue";
 import service from "@/service"
 import dolphin from "@/components/dolphin";
@@ -18,7 +16,6 @@ export default Vue.extend({
   name: "",
   components: {
     HomeMap,
-    JsxTemplate,
     TsxTemplate
   },
   data() {
@@ -59,7 +56,6 @@ export default Vue.extend({
   },
   methods: {
     initUser() {
-
     },
   },
   computed: {},
