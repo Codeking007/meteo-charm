@@ -44,9 +44,11 @@ export default Vue.extend({
     /*const Tag=`h1`;
     return <Tag>111</Tag>*/
 
-    // let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
+    let hText = `<h${this.hSize}>${this.ownTag + ":" + this.num}</h${this.hSize}>`;
     // let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
-    let hText: string = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
+    let str = '(hSize,ownTag,num,initUser1) => `<h${hSize} >${ownTag + ":" + num}</h${hSize}>`';
+    let func = eval.call(null, str);
+
     const buttonNodeData = {
       attrs: {},
       on: {
@@ -59,19 +61,18 @@ export default Vue.extend({
         type: "info"
       },
     };
-    let str = '(hSize,ownTag,num,initUser1) => `<h${hSize} >${ownTag + ":" + num}</h${hSize}>`';
-    let func = eval.call(null, str);
-
+    // let hButton = `<i-button type=${"info"} onClick=${this.initUser1}>${this.ownTag + ":" + this.num}</i-button>`;
     let hButton = `<i-button ${{...buttonNodeData}}>${this.ownTag + ":" + this.num}</i-button>`;
     let strButton = '(buttonNodeData,ownTag,num) => `<i-button ${{...buttonNodeData}}>${ownTag + ":" + num}</i-button>`';
     let funcButton = eval.call(null, strButton);
 
+    // 模板字符串的大括号内部，就是执行JavaScript代码
+    // 如果执行完JavaScript代码后，大括号中的值不是字符串，将按照一般的规则转为字符串。比如，大括号中是一个对象，将默认调用对象的toString方法。
+
     var Colors = {SUCCESS: "green", ALERT: "red"};
     var htmlFromApi = '<div className="button-basics-example"><Button color={Colors.SUCCESS}>Save</Button><Button color={Colors.ALERT}>Delete</Button></div>';
-
     // var Component = Babel.transform(htmlFromApi, {presets: ["jsx"]}).code;
     // return <div>{eval(Component)}</div>;
-
     /*Babel.transform("this.initUser1();",{presets: ["react"]}, function(err, result) {
       debugger
       console.log(result);
@@ -81,21 +82,8 @@ export default Vue.extend({
     // let transform = Babel.transform(hText);
     // console.log(transform)
 
-
     return (
         <div>
-          <div>
-            <i-button type={"info"}
-                      onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
-            {(this.renderTemplate.buttonIndex !== null && this.renderTemplate.buttonTemplate.length > 0) ? this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag : ""}
-          </div>
-          <br/>
-          <div>
-            <i-button type={"warning"}
-                      onClick={this.changeForm}>{this.ownTag + ":form表单:" + this.renderTemplate.formIndex + ":" + this.formItem.message}</i-button>
-            {(this.renderTemplate.formIndex !== null && this.renderTemplate.formTemplate.length > 0) ? this.renderTemplate.formTemplate[this.renderTemplate.formIndex].tag : ""}
-          </div>
-
 
           <div domPropsInnerHTML={hText}>
 
@@ -113,10 +101,21 @@ export default Vue.extend({
           <div class="red">
             {this.tests[this.id]}
           </div>
+
+
+          <div>
+            <i-button type={"info"}
+                      onClick={this.changeButton}>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+            {(this.renderTemplate.buttonIndex !== null && this.renderTemplate.buttonTemplate.length > 0) ? this.renderTemplate.buttonTemplate[this.renderTemplate.buttonIndex].tag : ""}
+          </div>
+          <br/>
+          <div>
+            <i-button type={"warning"}
+                      onClick={this.changeForm}>{this.ownTag + ":form表单:" + this.renderTemplate.formIndex + ":" + this.formItem.message}</i-button>
+            {(this.renderTemplate.formIndex !== null && this.renderTemplate.formTemplate.length > 0) ? this.renderTemplate.formTemplate[this.renderTemplate.formIndex].tag : ""}
+          </div>
         </div>
     );
-
-
   },
   mounted() {
     this.initButtonRenderTemplate();
@@ -219,11 +218,5 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="less">
-//@fontSize: 12px;
-//@bottom-height: 63px;
-.home {
-  width: 100%;
-  height: 100%;
-}
 
 </style>
