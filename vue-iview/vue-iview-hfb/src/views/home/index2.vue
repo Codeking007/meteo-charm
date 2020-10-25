@@ -25,7 +25,7 @@ export default Vue.extend({
   },
   created() {
     // fixme 方法1 通过向子组件传递属性props来加载
-    this.allComponentNames.forEach(componentName => {
+    this.allComponentNames.forEach((componentName: string) => {
       this.components5.push({
         component: () => import("../../../public/jsx/" + `${componentName}`)
       });
