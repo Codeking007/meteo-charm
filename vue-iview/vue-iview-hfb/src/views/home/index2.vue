@@ -25,11 +25,11 @@ export default Vue.extend({
   },
   created() {
     // fixme 方法1 通过向子组件传递属性props来加载
-    this.allComponentNames.forEach((componentName: string) => {
+    /*this.allComponentNames.forEach((componentName: string) => {
       this.components5.push({
         component: () => import("../../../public/jsx/" + `${componentName}`)
       });
-    });
+    });*/
     // fixme 方法2 通过router路由传值来加载
     /*if(this.$route.query){
       this.$route.query.allComponentNames.forEach(componentName => {
@@ -38,6 +38,11 @@ export default Vue.extend({
         });
       });
     }*/
+    // todo 方法3
+    const s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = '你的需要的js文件地址';
+    document.body.appendChild(s);
   },
 
 })

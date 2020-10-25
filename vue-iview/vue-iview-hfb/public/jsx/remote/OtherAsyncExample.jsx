@@ -43,10 +43,6 @@ export default Vue.extend({
             </div>);
     },
     mounted() {
-        /*const s = document.createElement('script');
-        s.type = 'text/javascript';
-        s.src = '你的需要的js文件地址';
-        document.body.appendChild(s);*/
         this.initButtonRenderTemplate();
         this.initFormRenderTemplate();
         this.$nextTick(() => {
