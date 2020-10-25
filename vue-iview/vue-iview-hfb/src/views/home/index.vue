@@ -10,10 +10,8 @@
 import Vue from "vue"
 import HomeMap from "../../components/map/index.vue"
 import TsxTemplate from "@/views/home/home-components/tsx.vue";
-import JsxJsx from "@/views/home/home-components/JsxTest";
 import TsxTsx from "@/views/home/home-components/TsxTest";
-import service from "@/service"
-import dolphin from "@/components/dolphin";
+import JsxJsx from "@/views/home/home-components/JsxTest";
 
 export default Vue.extend({
   // functional: true,
