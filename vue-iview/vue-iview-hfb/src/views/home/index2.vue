@@ -16,7 +16,7 @@ export default Vue.extend({
   props: {
     allComponentNames: {
       type: Array,
-      default: () => ["RemoteAsyncExample", "OtherAsyncExample"]
+      default: () => ["asss",/*"RemoteAsyncExample", "OtherAsyncExample"*/]
     }
   },
   components: {
@@ -31,11 +31,11 @@ export default Vue.extend({
   },
   created() {
     // fixme 方法1 通过向子组件传递属性props来加载
-    /*this.allComponentNames.forEach((componentName: string) => {
+    this.allComponentNames.forEach((componentName: string) => {
       this.components5.push({
         component: () => import("../../../public/jsx/" + `${componentName}`)
       });
-    });*/
+    });
     // fixme 方法2 通过router路由传值来加载
     /*if(this.$route.query){
       this.$route.query.allComponentNames.forEach(componentName => {

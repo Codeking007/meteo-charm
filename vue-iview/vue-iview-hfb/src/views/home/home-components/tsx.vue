@@ -3,6 +3,8 @@
 import Vue, {CreateElement, RenderContext, VNodeData} from "vue"
 import {DefaultProps} from "vue/types/options";
 import {ScopedSlot, VNode, VNodeDirective} from "vue/types/vnode";
+// import { transform } from "@babel/core";
+// import * as babel from "@babel/core";
 
 export default Vue.extend({
   // todo
@@ -38,6 +40,17 @@ export default Vue.extend({
 
     // 模板字符串的大括号内部，就是执行JavaScript代码
     // 如果执行完JavaScript代码后，大括号中的值不是字符串，将按照一般的规则转为字符串。比如，大括号中是一个对象，将默认调用对象的toString方法。
+
+    /*var Colors = {SUCCESS: "green", ALERT: "red"};
+    var Button = ({color, children}) => (
+        <button style={{backgroundColor: color}}>{children}</button>
+    );
+    var htmlFromApi = '<div className="button-basics-example"><Button color={Colors.SUCCESS}>Save</Button><Button color={Colors.ALERT}>Delete</Button></div>';
+
+    debugger
+    var Component = babel.transform(htmlFromApi, {presets: ["react"]}).code;
+    return <div>{eval(Component)}</div>;*/
+
 
     return (
         <div>
