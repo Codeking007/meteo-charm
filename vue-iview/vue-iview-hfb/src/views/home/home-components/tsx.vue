@@ -24,6 +24,11 @@ export default Vue.extend({
         buttonTemplate: [],
         formIndex: null,
         formTemplate: [],
+        hText: null,
+        str: null,
+        func: () => {
+        },
+        test1:null,
       },
       ownTag: "tsx",
       num: 0,
@@ -33,13 +38,6 @@ export default Vue.extend({
     }
   },
   render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
-    // let hText = `<h${this.hSize} onClick="${this.initUser1}">${this.ownTag + ":" + this.num}</h${this.hSize}>`;
-    let hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
-    let str = '(hSize,ownTag,num,initUser1) => `<h${hSize}>${ownTag + ":" + num}</h${hSize}>`';
-    let func = eval.call(null, str);
-
-    // 模板字符串的大括号内部，就是执行JavaScript代码
-    // 如果执行完JavaScript代码后，大括号中的值不是字符串，将按照一般的规则转为字符串。比如，大括号中是一个对象，将默认调用对象的toString方法。
 
     /*var Colors = {SUCCESS: "green", ALERT: "red"};
     var Button = ({color, children}) => (
@@ -54,10 +52,13 @@ export default Vue.extend({
 
     return (
         <div>
-          <div domPropsInnerHTML={hText}>
+          <div {...this.renderTemplate.test1}>
 
           </div>
-          <div domPropsInnerHTML={func(this.hSize, this.ownTag, this.num, this.initUser1)}>
+          <div domPropsInnerHTML={this.renderTemplate.hText}>
+
+          </div>
+          <div domPropsInnerHTML={this.renderTemplate.func(this.hSize, this.ownTag, this.num, this.initUser1)}>
 
           </div>
 
@@ -78,6 +79,7 @@ export default Vue.extend({
   mounted() {
     this.initButtonRenderTemplate();
     this.initFormRenderTemplate();
+    this.initInnerHTMLRenderTemplate();
     this.$nextTick(() => {
 
     });
@@ -144,7 +146,7 @@ export default Vue.extend({
               <i-form model={this.formItem} onInput={() => {
               }} label-width={150}>
                 <form-item label={"label宽度为150px"}>
-                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."} />
+                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}/>
                 </form-item>
               </i-form>
         },
@@ -154,7 +156,7 @@ export default Vue.extend({
           tag:
               <i-form {...formNodeData}>
                 <form-item label={"label宽度为170px"}>
-                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."} />
+                  <i-input v-model={this.formItem.message} placeholder={"Enter something..dwdw."}/>
                 </form-item>
               </i-form>
         }
@@ -163,6 +165,35 @@ export default Vue.extend({
     changeForm() {
       console.log("tsx:changeForm()")
       this.renderTemplate.formIndex = (this.renderTemplate.formIndex + 1) % this.renderTemplate.formTemplate.length;
+    },
+    initInnerHTMLRenderTemplate() {
+      // 模板字符串的大括号内部，就是执行JavaScript代码
+      // 如果执行完JavaScript代码后，大括号中的值不是字符串，将按照一般的规则转为字符串。比如，大括号中是一个对象，将默认调用对象的toString方法。
+
+      this.renderTemplate.hText = `<h${this.hSize} onClick="${this.initUser1}">${this.ownTag + ":" + this.num}</h${this.hSize}>`;
+      this.renderTemplate.hText = "<h" + this.hSize + ">" + (this.ownTag + ":" + this.num) + "</h" + this.hSize + ">";
+      this.renderTemplate.str = '(hSize,ownTag,num,initUser1) => `<h${hSize}>${ownTag + ":" + num}</h${hSize}>`';
+      this.renderTemplate.func = eval.call(null, this.renderTemplate.str);
+
+
+      // fixme 具体参数看源码中，render()的第一个参数CreateElement中的参数data:VNodeData
+      this.renderTemplate.test1 = {
+        props: {
+          "v-model": this.formItem.message,
+          type: "success",
+        },
+        domProps: {
+          innerHTML: <i-button>{this.ownTag + ":button:" + this.renderTemplate.buttonIndex}</i-button>
+        },
+        on: {
+          click: () => {
+            this.changeButton();
+          }
+        },
+      };
+
+
+
     },
     initUser1(content) {
       console.log(this.ownTag + ":" + this.num);
