@@ -1,8 +1,9 @@
 import {RouteConfig} from "vue-router";
 
-import home_index from '@/views/home/index.vue';
-import home_index1 from '@/views/home/index1.vue';
-import home_index2 from '@/views/home/index2.vue';
+import home_index from '@/views/home/home/index.vue';
+import home_index1 from '@/views/home/home1/index1.vue';
+import home_index2 from '@/views/home/home2/index2.vue';
+import home_index3 from '@/views/home/home3/index3.vue';
 // import homeChildren from "./home";
 
 const menu: Array<RouteConfig> = [];
@@ -25,6 +26,13 @@ menu.push(
         path: 'home2',
         name: 'home2',
         component: home_index2,
+        meta: {requiresLogin: false, auth: 'home', title: '首页'},
+        // children: homeChildren
+    },
+    {
+        path: 'home3',
+        name: 'home3',
+        component: home_index3,
         meta: {requiresLogin: false, auth: 'home', title: '首页'},
         // children: homeChildren
     },

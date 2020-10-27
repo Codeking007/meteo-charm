@@ -8,10 +8,10 @@
 
 <script lang="ts">
 import Vue from "vue"
-import HomeMap from "../../components/map/index.vue"
-import TsxTemplate from "@/views/home/home-components/tsx.vue";
-import TsxTsx from "@/views/home/home-components/TsxTest";
-import JsxJsx from "@/views/home/home-components/JsxTest";
+import HomeMap from "../../../components/map/index.vue"
+import TsxTemplate from "@/views/home/home/tsx.vue";
+import TsxTsx from "@/views/home/home/TsxTest";
+import JsxJsx from "@/views/home/home/JsxTest";
 
 export default Vue.extend({
   // functional: true,

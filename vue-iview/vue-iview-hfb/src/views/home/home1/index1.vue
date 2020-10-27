@@ -14,7 +14,7 @@
 <script lang="ts">
 import Vue from "vue"
 // fixme 方法1
-// import AsyncExample from "@/views/home/AsyncExample";
+// import AsyncExample from "@/views/home/home1/AsyncExample";
 
 // fixme 方法2
 // Vue.component("async-example", () => import("./AsyncExample"));

@@ -6,6 +6,7 @@
       <Button type="primary" @click="clickTab()">主页面==>首页</Button>
       <Button type="primary" @click="clickTab1()">主页面==>异步加载组件</Button>
       <Button type="primary" @click="clickTab2()">主页面==>异步加载远程组件</Button>
+      <Button type="primary" @click="clickTab3()">主页面==>js方式动态写table</Button>
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
@@ -48,6 +49,9 @@ export default Vue.extend({
           allComponentNames: ["RemoteAsyncExample","OtherAsyncExample"],
         }
       });
+    },
+    clickTab3() {
+      this.$router.push({path: "/home3"});
     },
     showLogin() {
       // this.$store.commit(mutationType.showOrHideLogin, {showOrHideLogin: true});

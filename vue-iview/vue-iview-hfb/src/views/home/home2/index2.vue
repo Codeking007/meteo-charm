@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import RemoteJs from "@/views/home/remote/remote-js.vue";
+import RemoteJs from "@/views/home/home2/remote/remote-js.vue";
 
 export default Vue.extend({
   // functional: true,
@@ -33,7 +33,7 @@ export default Vue.extend({
     // fixme 方法1 通过向子组件传递属性props来加载
     this.allComponentNames.forEach((componentName: string) => {
       this.components5.push({
-        component: () => import("../../../public/jsx/" + `${componentName}`)
+        component: () => import("../../../../public/jsx/" + `${componentName}`)
       });
     });
     // fixme 方法2 通过router路由传值来加载
