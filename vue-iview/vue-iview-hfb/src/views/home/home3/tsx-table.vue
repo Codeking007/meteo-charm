@@ -33,12 +33,42 @@ export default Vue.extend({
           }
         },
         {
-          title: 'Age',
-          key: 'age'
-        },
-        {
-          title: 'Address',
-          key: 'address'
+          title: 'Other',
+          align: 'center',
+          children: [
+            {
+              title: 'Age',
+              key: 'age',
+              align: 'center',
+              render: (h, params) => {
+                return h('Input', {
+                  props: {
+                    clearable: true,
+                    // size: "large",
+                    placeholder: "Enter something...",
+                  },
+                  style: {
+                    marginRight: '5px',
+                    width: "300px",
+                  },
+                  on: {
+                    /*click: () => {
+                      (this as any).show(params.index)
+                    }*/
+                    input(e) {
+                      // this.text=e.target.value
+                      console.log(params)
+                      console.log(e)
+                    }
+                  }
+                });
+              }
+            },
+            {
+              title: 'Address',
+              key: 'address'
+            },
+          ],
         },
         {
           title: 'Action',
@@ -123,7 +153,7 @@ export default Vue.extend({
         通过给 columns 数据的项，设置一个函数 render，可以自定义渲染当前列，包括渲染自定义组件，它基于 Vue 的 Render 函数。
         render 函数传入两个参数，第一个是 h，第二个是对象，包含 row、column 和 index，分别指当前单元格数据，当前列数据，当前是第几行。
 */
-    /* fixme 右键菜单 #
+    /* todo 右键菜单 #
         4.2.0
          开启属性 show-context-menu，并配合 slot contextMenu 可以实现点击右键弹出菜单。
 */
@@ -139,7 +169,7 @@ export default Vue.extend({
           该函数可以返回一个包含两个元素的数组，第一个元素代表 rowspan，第二个元素代表 colspan。 也可以返回一个键名为 rowspan 和 colspan 的对象。
 */
 
-    /* todo 表头分组 #
+    /* fixme 表头分组 #
         给 column 设置 children，可以渲染出分组表头。
 */
 
@@ -194,16 +224,20 @@ export default Vue.extend({
       this.data6.splice(index, 1);
     },
     handleContextMenu(row) {
-      const index = this.data1.findIndex(item => item.name === row.name);
+      console.log("handleContextMenu");
+      const index = this.data6.findIndex(item => item.name === row.name);
       this.contextLine = index + 1;
     },
     handleContextMenuEdit() {
+      console.log("handleContextMenuEdit");
       this.$Message.info('Click edit of line' + this.contextLine);
     },
     handleContextMenuDelete() {
+      console.log("handleContextMenuDelete");
       this.$Message.info('Click delete of line' + this.contextLine);
     },
     handleSpan({row, column, rowIndex, columnIndex}) {
+      // console.log("handleSpan", row, column, rowIndex, columnIndex);
       if (rowIndex === 0 && columnIndex === 0) {
         return [1, 2];
       } else if (rowIndex === 0 && columnIndex === 1) {
