@@ -114,6 +114,8 @@ export default Vue.extend({
       formItem: {
         message: '',
       },
+      contextLine: 0,
+
     }
   },
   render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
@@ -121,12 +123,12 @@ export default Vue.extend({
         通过给 columns 数据的项，设置一个函数 render，可以自定义渲染当前列，包括渲染自定义组件，它基于 Vue 的 Render 函数。
         render 函数传入两个参数，第一个是 h，第二个是对象，包含 row、column 和 index，分别指当前单元格数据，当前列数据，当前是第几行。
 */
-    /* todo 右键菜单 #
+    /* fixme 右键菜单 #
         4.2.0
          开启属性 show-context-menu，并配合 slot contextMenu 可以实现点击右键弹出菜单。
 */
 
-    /* todo 行/列合并 #
+    /* fixme 行/列合并 #
         4.0.0
          设置属性 span-method 可以指定合并行或列的算法。
           该方法参数为 4 个对象：
@@ -147,7 +149,13 @@ export default Vue.extend({
 
     return (
         <div>
-          <i-table highlight-row border columns={this.columns6} data={this.data6}></i-table>
+          <i-table context-menu show-context-menu highlight-row border on-contextmenu={this.handleContextMenu}
+                   span-method={this.handleSpan} columns={this.columns6} data={this.data6}>
+            <template slot="contextMenu">
+              <dropdownItem nativeOnClick={this.handleContextMenuEdit}>编辑</dropdownItem>
+              <dropdownItem nativeOnClick={this.handleContextMenuDelete} style="color: #ed4014">删除</dropdownItem>
+            </template>
+          </i-table>
 
           <div>
             <i-button type={"info"}
@@ -184,6 +192,34 @@ export default Vue.extend({
     },
     remove(index) {
       this.data6.splice(index, 1);
+    },
+    handleContextMenu(row) {
+      const index = this.data1.findIndex(item => item.name === row.name);
+      this.contextLine = index + 1;
+    },
+    handleContextMenuEdit() {
+      this.$Message.info('Click edit of line' + this.contextLine);
+    },
+    handleContextMenuDelete() {
+      this.$Message.info('Click delete of line' + this.contextLine);
+    },
+    handleSpan({row, column, rowIndex, columnIndex}) {
+      if (rowIndex === 0 && columnIndex === 0) {
+        return [1, 2];
+      } else if (rowIndex === 0 && columnIndex === 1) {
+        return [0, 0];
+      }
+      if (rowIndex === 2 && columnIndex === 0) {
+        return {
+          rowspan: 2,
+          colspan: 1
+        };
+      } else if (rowIndex === 3 && columnIndex === 0) {
+        return {
+          rowspan: 0,
+          colspan: 0
+        };
+      }
     },
     initButtonRenderTemplate() {
       let buttonNodeData: VNodeData = {
