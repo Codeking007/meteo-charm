@@ -179,6 +179,7 @@ export default Vue.extend({
         使用 render 字段可以基于 Render 函数来自定义内容。
         使用 render 后，将不再限制类型，content 也将无效。
     */
+    /* todo Carousel 走马灯*/
     let tableNodeData: VNodeData = {
       props: {
         size: "small",
