@@ -23,7 +23,6 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.initUser();
     this.$nextTick(() => {
 
     });
@@ -34,8 +33,7 @@ export default Vue.extend({
     });
   },
   methods: {
-    initUser() {
-    },
+
   },
 
 })
