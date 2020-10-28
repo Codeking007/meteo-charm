@@ -192,6 +192,7 @@ export default Vue.extend({
     */
     /* todo Carousel 走马灯*/
     /* todo 计算属性，单位转换  可以模拟manage项目写的lon、lat子组件，用render来做*/
+    /* todo 要validate验证输入框是否非空，是否为数字*/
     let tableNodeData: VNodeData = {
       props: {
         size: "small",
