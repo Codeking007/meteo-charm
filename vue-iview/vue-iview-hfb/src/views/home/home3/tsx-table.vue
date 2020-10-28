@@ -22,14 +22,23 @@ export default Vue.extend({
           title: 'Name',
           key: 'name',
           render: (h, params) => {
-            return h('div', [
-              h('Icon', {
-                props: {
-                  type: 'person'
-                }
-              }),
-              h('strong', [params.row.name])
-            ]);
+            return h(
+                'div',
+                [
+                  h(
+                      'Icon',
+                      {
+                        props: {
+                          type: 'person'
+                        }
+                      }
+                  ),
+                  h(
+                      'strong',
+                      [params.row.name]
+                  )
+                ]
+            );
           }
         },
         {
@@ -41,27 +50,30 @@ export default Vue.extend({
               key: 'age',
               align: 'center',
               render: (h, params) => {
-                return h('Input', {
-                  props: {
-                    value: params.row.age,
-                    clearable: true,
-                    // size: "large",
-                    placeholder: "Enter something...",
-                  },
-                  style: {
-                    marginRight: '5px',
-                    width: "300px",
-                  },
-                  on: {
-                    /*click: () => {
-                      (this as any).show(params.index)
-                    }*/
-                    input: (e) => {
-                      // fixme 改变了data后，param也就跟着改变了
-                      (this as any).data6[params.index].age = e;
+                return h(
+                    'Input',
+                    {
+                      props: {
+                        value: params.row.age,
+                        clearable: true,
+                        // size: "large",
+                        placeholder: "Enter something...",
+                      },
+                      style: {
+                        marginRight: '5px',
+                        width: "300px",
+                      },
+                      on: {
+                        /*click: () => {
+                          (this as any).show(params.index)
+                        }*/
+                        input: (e) => {
+                          // fixme 改变了data后，param也就跟着改变了
+                          (this as any).data6[params.index].age = e;
+                        }
+                      }
                     }
-                  }
-                });
+                );
               }
             },
             {
@@ -76,33 +88,44 @@ export default Vue.extend({
           width: 150,
           align: 'center',
           render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    (this as any).show(params.index)
-                  }
-                }
-              }, ['View']),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                on: {
-                  click: () => {
-                    (this as any).remove(params.index)
-                  }
-                }
-              }, ['Delete']),
-            ]);
+            return h(
+                'div',
+                [
+                  h(
+                      'Button',
+                      {
+                        props: {
+                          type: 'primary',
+                          size: 'small'
+                        },
+                        style: {
+                          marginRight: '5px'
+                        },
+                        on: {
+                          click: () => {
+                            (this as any).show(params.index)
+                          }
+                        }
+                      },
+                      ['View']
+                  ),
+                  h(
+                      'Button',
+                      {
+                        props: {
+                          type: 'error',
+                          size: 'small'
+                        },
+                        on: {
+                          click: () => {
+                            (this as any).remove(params.index)
+                          }
+                        }
+                      },
+                      ['Delete']
+                  ),
+                ]
+            );
           }
         }
       ],
