@@ -196,7 +196,6 @@ export default Vue.extend({
       on: {
         // fixme 直接看iview源码，把子组件$emit函数的第一个参数复制过来就行了
         "on-contextmenu": (row, event, position) => {
-          // contents....
           this.$nextTick(() => {
             this.handleContextMenu(row, event, position);
           })
@@ -268,10 +267,6 @@ export default Vue.extend({
           colspan: 0
         };
       }
-    },
-    initUser1(content) {
-      console.log(this.ownTag + ":" + this.num);
-      this.num++;
     },
   },
   computed: {},
