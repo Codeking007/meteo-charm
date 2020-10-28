@@ -57,13 +57,8 @@ export default Vue.extend({
                       (this as any).show(params.index)
                     }*/
                     input: (e) => {
-                      // this.text=e.target.value
-                      (this as any).updateData(params, e);
-                      console.log(params);
-                      console.log(e);
-                      // params.row.age = e;
-                      console.log(params);
-                      console.log(e);
+                      // fixme 改变了data后，param也就跟着改变了
+                      (this as any).data6[params.index].age = e;
                     }
                   }
                 });
@@ -265,9 +260,6 @@ export default Vue.extend({
           colspan: 0
         };
       }
-    },
-    updateData(params, value) {
-      this.data6[params.index].age = value;
     },
     initUser1(content) {
       console.log(this.ownTag + ":" + this.num);
