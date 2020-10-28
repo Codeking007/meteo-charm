@@ -173,6 +173,12 @@ export default Vue.extend({
     /* fixme 尺寸 #
         通过设置属性 size 为 large 或 small 可以调整表格尺寸为大或小，默认不填或填写 default 为中。
 */
+    /* todo TimePicker 时间选择器 */
+    /* todo InputNumber 数字输入框 */
+    /* todo Modal 对话框
+        使用 render 字段可以基于 Render 函数来自定义内容。
+        使用 render 后，将不再限制类型，content 也将无效。
+    */
     let tableNodeData: VNodeData = {
       props: {
         size: "small",
