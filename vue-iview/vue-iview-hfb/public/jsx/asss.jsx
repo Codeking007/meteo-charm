@@ -35,43 +35,74 @@ export default Vue.extend({
         return (
             <table style="width: 100%;text-align: center;">
                 <tr>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="5">机动车停车场(道路)收费明码标价</td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="7">机动车停车场(道路)收费明码标价</td>
                 </tr>
                 <tr>
                     <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">收费依据</td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="5">湛价函[2010]208号文和湛价函[2014]68号文</td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1"
+                        colSpan="7">湛价函[2010]208号文和湛价函[2014]68号文
+                    </td>
                 </tr>
                 <tr>
                     <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="2" colSpan="1">车型</td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="3">白天时段: <span name="feeRules" className="time">08:00</span>-<span name="feeRules" className="time">23:00</span></td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="2" colSpan="1">夜间时段: <span name="feeRules" className="time">00:00</span>-<span name="feeRules" className="time">08:00</span></td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="3">白天时段: <span
+                        contentEditable="true" name="feeRules" className="time">08:00</span>-<span
+                        contentEditable="true" name="feeRules" className="time">24:00</span></td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="2">夜间时段: <span
+                        contentEditable="true" name="feeRules" className="time">00:00</span>-<span
+                        contentEditable="true" name="feeRules" className="time">08:00</span></td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="2" colSpan="1">24小时内(含)最高限价</td>
                 </tr>
                 <tr>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">停车<span name="feeRules">3</span>小时内(含)
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">停车<span
+                        contentEditable="true" name="feeRules">3</span>小时内(含)
                     </td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">停车<span name="feeRules">3</span>小时至<span name="feeRules">6</span>小时(含)
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">停车<span
+                        contentEditable="true" name="feeRules">3</span>小时至<span name="feeRules">6</span>小时(含)
                     </td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">停车<span name="feeRules">6</span>小时以上
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">停车<span
+                        contentEditable="true" name="feeRules">6</span>小时以上
+                    </td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">停车<span
+                        contentEditable="true" name="feeRules">3</span>小时以内(含)
+                    </td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">停车<span
+                        contentEditable="true" name="feeRules">3</span>小时以上
                     </td>
                 </tr>
                 <tr>
                     <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">微型、小型、中型客车及微型、轻型货车</td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span name="feeRules" className="money">5</span>元/次
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span
+                        contentEditable="true" name="feeRules" className="money">5</span>元/次
                     </td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span name="feeRules" className="money">8</span>元/次
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span
+                        contentEditable="true" name="feeRules" className="money">8</span>元/次
                     </td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span name="feeRules" className="money">10</span>元/次
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span
+                        contentEditable="true" name="feeRules" className="money">10</span>元/次
                     </td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span name="feeRules" className="money">10</span>元/次
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span
+                        contentEditable="true" name="feeRules" className="money">5</span>元/次
+                    </td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span
+                        contentEditable="true" name="feeRules" className="money">10</span>元/次
+                    </td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1"><span
+                        contentEditable="true" name="feeRules" className="money">12</span>元/次
+                    </td>
+                </tr>
+                <tr>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="8">停车不超过<span
+                        contentEditable="true" name="feeRules" className="time">15</span>分钟的免费, 本停车点保管看护时段:
                     </td>
                 </tr>
                 <tr>
                     <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">价格举报电话:</td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="5">12358</td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="7">12358</td>
                 </tr>
                 <tr>
                     <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="1">服务监督电话:</td>
-                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="5">0759-3162699</td>
+                    <td style="height: 2rem;border: 1px #ccc solid;" rowSpan="1" colSpan="7">0759-3162699</td>
                 </tr>
             </table>
         );
