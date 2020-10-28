@@ -180,6 +180,7 @@ export default Vue.extend({
         使用 render 后，将不再限制类型，content 也将无效。
     */
     /* todo Carousel 走马灯*/
+    /* todo 计算属性，单位转换  可以模拟manage项目写的lon、lat子组件，用render来做*/
     let tableNodeData: VNodeData = {
       props: {
         size: "small",
