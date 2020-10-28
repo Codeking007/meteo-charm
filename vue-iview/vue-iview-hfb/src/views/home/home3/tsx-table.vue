@@ -28,7 +28,7 @@ export default Vue.extend({
                   type: 'person'
                 }
               }),
-              h('strong', params.row.name)
+              h('strong', [params.row.name])
             ]);
           }
         },
@@ -90,7 +90,7 @@ export default Vue.extend({
                     (this as any).show(params.index)
                   }
                 }
-              }, 'View'),
+              }, ['View']),
               h('Button', {
                 props: {
                   type: 'error',
@@ -101,7 +101,7 @@ export default Vue.extend({
                     (this as any).remove(params.index)
                   }
                 }
-              }, 'Delete')
+              }, ['Delete']),
             ]);
           }
         }
