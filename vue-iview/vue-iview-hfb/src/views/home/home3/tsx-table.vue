@@ -128,24 +128,7 @@ export default Vue.extend({
           address: 'Ottawa No. 2 Lake Park'
         }
       ],
-      renderTemplate: {
-        buttonIndex: null,
-        buttonTemplate: [],
-        formIndex: null,
-        formTemplate: [],
-        hText: null,
-        str: null,
-        func: () => {
-        },
-        test1: null,
-      },
-      ownTag: "tsx",
-      num: 0,
-      formItem: {
-        message: '',
-      },
       contextLine: 0,
-
     }
   },
   render(createElement: CreateElement, context: RenderContext<DefaultProps>): VNode {
@@ -215,16 +198,6 @@ export default Vue.extend({
         </div>
     );
   },
-  mounted() {
-    this.$nextTick(() => {
-
-    });
-  },
-  activated() {
-    this.$nextTick(() => {
-
-    });
-  },
   methods: {
     show(index) {
       this.$Modal.info({
@@ -270,8 +243,17 @@ export default Vue.extend({
     },
   },
   computed: {},
-  watch: {}
+  watch: {},
+  mounted() {
+    this.$nextTick(() => {
 
+    });
+  },
+  activated() {
+    this.$nextTick(() => {
+
+    });
+  },
 })
 </script>
 
