@@ -141,8 +141,8 @@ export default Vue.extend({
     remove(index) {
       this.data1.splice(index, 1);
     },
-    handleContextMenu(row) {
-      console.log(row)
+    handleContextMenu(row, event, position) {
+      console.log(row, event, position)
       const index = this.data1.findIndex(item => item.name === row.name);
       this.contextLine = index + 1;
     },
