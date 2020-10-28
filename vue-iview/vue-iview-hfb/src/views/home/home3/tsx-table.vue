@@ -24,6 +24,7 @@ export default Vue.extend({
           render: (h, params) => {
             return h(
                 'div',
+                {},
                 [
                   h(
                       'Icon',
@@ -31,10 +32,12 @@ export default Vue.extend({
                         props: {
                           type: 'person'
                         }
-                      }
+                      },
+                      []
                   ),
                   h(
                       'strong',
+                      {},
                       [params.row.name]
                   )
                 ]
@@ -72,7 +75,8 @@ export default Vue.extend({
                           (this as any).data6[params.index].age = e;
                         }
                       }
-                    }
+                    },
+                    []
                 );
               }
             },
@@ -90,6 +94,7 @@ export default Vue.extend({
           render: (h, params) => {
             return h(
                 'div',
+                {},
                 [
                   h(
                       'Button',
