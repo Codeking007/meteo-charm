@@ -209,6 +209,7 @@ export default Vue.extend({
           4.0.0
            给某一列设置属性 resizable 为 true，可以拖拽调整该列的宽度，需开启 border 属性，且该列设置了 width 属性。
            拖拽松开时，会触发 @on-column-width-resize 事件。*/
+    /* todo 用InputNumber来模拟0~24点，时间组件选择不了24点*/
     let tableNodeData: VNodeData = {
       props: {
         size: "small",
