@@ -22,7 +22,17 @@ export default Vue.extend({
           title: 'Name',
           key: 'name',
           render: (h, params) => {
-            return h(
+            // region fixme 技巧3：既然用了JSX语法了，那么自然而然地，就不用照着iview官网所写的render()函数来写了，就可以把render()函数变为JSX语法了！！！写起来也更方便了
+            // region fixme JSX语法
+            return (
+                <div>
+                  <icon type="ios-add"/>
+                  <strong>{params.row.name}</strong>
+                </div>
+            );
+            // endregion
+            // region fixme iview官网所写的render()函数
+            /*return h(
                 'div',
                 {},
                 [
@@ -30,7 +40,7 @@ export default Vue.extend({
                       'Icon',
                       {
                         props: {
-                          type: 'person'
+                          type: 'ios-add'
                         }
                       },
                       []
@@ -41,7 +51,9 @@ export default Vue.extend({
                       [params.row.name]
                   )
                 ]
-            );
+            );*/
+            // endregion
+            // endregion
           }
         },
         {
@@ -192,6 +204,10 @@ export default Vue.extend({
     */
     /* todo Carousel 走马灯*/
     /* todo 计算属性，单位转换  可以模拟manage项目写的lon、lat子组件，用render来做*/
+    /* todo 拖拽调整列宽 #
+          4.0.0
+           给某一列设置属性 resizable 为 true，可以拖拽调整该列的宽度，需开启 border 属性，且该列设置了 width 属性。
+           拖拽松开时，会触发 @on-column-width-resize 事件。*/
     let tableNodeData: VNodeData = {
       props: {
         size: "small",
@@ -199,13 +215,13 @@ export default Vue.extend({
         border: true,
         columns: this.columns6,
         data: this.data6,
-        // fixme 看iview源码的prop就是这个属性，所以这么写没问题。不一定非得照着iview官网写成“span-method”
+        // fixme 技巧1：看iview源码的prop就是这个属性，所以这么写没问题。不一定非得照着iview官网写成“span-method”
         spanMethod: this.handleSpan,
         contextMenu: true,
         showContextMenu: true,
       },
       on: {
-        // fixme 直接看iview源码，把子组件$emit函数的第一个参数复制过来就行了
+        // fixme 技巧2：直接看iview源码，把子组件$emit函数的第一个参数复制过来就行了
         "on-contextmenu": (row, event, position) => {
           this.$nextTick(() => {
             this.handleContextMenu(row, event, position);
