@@ -102,9 +102,6 @@ export default Vue.extend({
         "on-contextmenu": (row, event, position) => {
           this.$nextTick(() => {
             this.handleContextMenu(row, event, position);
-            this.generateUrl("${s(u)}");
-            this.generateUrl("白天时段: ${t(dd:HH)}-${t(dd:HH)}");
-            this.generateUrl("${m(yuan)}元/次");
           })
         },
         // "on-contextmenu": this.handleContextMenu,
@@ -140,40 +137,71 @@ export default Vue.extend({
       return this.chargeTemplate.span[rowIndex][columnIndex];
 
     },
-    generateUrl(str: string) {
-      let typeMatchArray: RegExpMatchArray | null = str.match(/(?<=\${).+?(?=})/g);
-      if (typeMatchArray != null) {
-        typeMatchArray.forEach((typeValue, typeIndex, typeArray) => {
-          let formatMatchArray: RegExpMatchArray | null = str.match(/(?<=\().+?(?=\))/g);
-          if (formatMatchArray != null) {
-            formatMatchArray.forEach((formatValue, formatIndex, formatArray) => {
-              switch (typeValue.charAt(0)) {
-                  // 字符串，直接显示
-                case 's':
-                  console.log('s');
-                  console.log(formatValue);
-                  break;
-                  // 时间（单位：从0点开始有多少秒），render渲染为时间组件
-                case 't':
-                  console.log('t');
-                  console.log(formatValue);
-                  break;
-                  // 金额（单位：分）， render渲染为金钱组件
-                case 'm':
-                  console.log('m');
-                  console.log(formatValue);
-                  break;
-                default:
-                  console.log(formatValue);
-                  break;
+    renderCellArray() {
+
+    },
+    renderCell(chargeTemplateRegexArray: Array<string>, row: number, column: number) {
+      let tableRenderCells: Array<any> = new Array<any>();
+      if (chargeTemplateRegexArray != null) {
+        let chargeRuleVariablesIndex: number = 0;
+        for (let i = 0; i < chargeTemplateRegexArray.length; i++) {
+          let templateRegexElement = chargeTemplateRegexArray[i];
+          let typeMatchArray: RegExpMatchArray | null = templateRegexElement.match(/(?<=\${).+?(?=})/g);
+          if (typeMatchArray != null && typeMatchArray.length > 0) {
+            typeMatchArray.forEach((typeValue, typeIndex, typeArray) => {
+              let formatMatchArray: RegExpMatchArray | null = templateRegexElement.match(/(?<=\().+?(?=\))/g);
+              if (formatMatchArray != null && formatMatchArray.length > 0) {
+                formatMatchArray.forEach((formatValue, formatIndex, formatArray) => {
+                  switch (typeValue.charAt(0)) {
+                      // 字符串，直接显示
+                    case 's':
+                      tableRenderCells.push(
+                          <div>
+                            {this.chargeRule.variables[row][column][chargeRuleVariablesIndex]}
+                          </div>
+                      );
+                      ++chargeRuleVariablesIndex;
+                      break;
+                      // 时间（单位：从0点开始有多少秒），render渲染为时间组件
+                    case 't':
+                      tableRenderCells.push(
+                          <div>
+                            {this.chargeRule.variables[row][column][chargeRuleVariablesIndex]}
+                          </div>
+                      );
+                      ++chargeRuleVariablesIndex;
+                      break;
+                      // 金额（单位：分）， render渲染为金钱组件
+                    case 'm':
+                      tableRenderCells.push(
+                          <div>
+                            {this.chargeRule.variables[row][column][chargeRuleVariablesIndex]}
+                          </div>
+                      );
+                      ++chargeRuleVariablesIndex;
+                      break;
+                    default:
+                      tableRenderCells.push(
+                          <div>
+                            {formatValue}
+                          </div>
+                      );
+                      ++chargeRuleVariablesIndex;
+                      break;
+                  }
+                })
               }
-            })
+            });
+          } else {
+            tableRenderCells.push(
+                <span>
+                  {templateRegexElement}
+                </span>
+            );
           }
-        });
+        }
       }
-
-      "aabbccdd".split(/aa|cc/);
-
+      return tableRenderCells;
     },
   },
   computed: {},
