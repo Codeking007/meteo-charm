@@ -223,7 +223,7 @@ export default Vue.extend({
         showContextMenu: true,
       },
       on: {
-        // fixme 技巧2：直接看iview源码，把子组件$emit函数的第一个参数复制过来就行了
+        // fixme 技巧2：直接看iview源码，把子组件$emit()函数的第一个参数复制过来就行了
         "on-contextmenu": (row, event, position) => {
           this.$nextTick(() => {
             this.handleContextMenu(row, event, position);

@@ -9,6 +9,7 @@
 import Vue from "vue"
 import TsxTable from "./tsx-table.vue";
 import TsxTableZj from "./tsx-table-zj.vue";
+import {ScopedSlot, VNodeDirective} from "vue/types/vnode";
 
 export default Vue.extend({
   // functional: true,
@@ -58,28 +59,39 @@ export default Vue.extend({
               "aabbccdd".split(/aa|cc/);
         */
         regex: [
-          {0: ["机动车停车场(道路)收费明码标价"], 1: null, 2: null, 3: null, 4: null, 5: null},
-          {0: ["收费依据"], 1: ["${s(u)}"], 2: null, 3: null, 4: null, 5: null},
-          {0: ["车型"], 1: ["白天时段: ","${t(dd:HH)}","-","${t(dd:HH)}"], 2: null, 3: null, 4: ["夜间时段: ","${t(dd:HH)}","-","${t(dd:HH)}"], 5: ["24小时内（含）最高限价"]},
-          {0: null, 1: ["停车","${t(H)}","小时内(含)"], 2: ["停车","${t(H)}","小时至","${t(H)}","小时(含)"], 3: ["停车","${t(H)}","小时以上"], 4: null, 5: null},
-          {0: ["小型车辆"], 1: ["${m(yuan)}","元/次"], 2: ["${m(yuan)}","元/次"], 3: ["${m(yuan)}","元/次"], 4: ["${m(yuan)}","元/次"], 5: ["${m(yuan)}","元/次"]},
-          {0: ["超大型车辆"], 1: ["${m(yuan)}","元/次"], 2: null, 3: null, 4: ["${m(yuan)}","元/次"], 5: [""]},
-          {0: ["停车不超过","${t(m)}","分钟的免费, 本停车点保管看护时段:"], 1: null, 2: null, 3: null, 4: null, 5: null},
-          {0: ["价格举报电话:"], 1: ["${s(u)}"], 2: null, 3: null, 4: null, 5: null},
-          {0: ["服务监督电话:"], 1: ["${s(u)}"], 2: null, 3: null, 4: null, 5: null},
+          [["机动车停车场(道路)收费明码标价"], null, null, null, null, null],
+          [["收费依据"], ["${s(u)}"], null, null, null, null],
+          [["车型"], ["白天时段: ", "${t(dd:HH)}", "-", "${t(dd:HH)}"], null, null, ["夜间时段: ", "${t(dd:HH)}", "-", "${t(dd:HH)}"], ["24小时内（含）最高限价"]],
+          [null, ["停车", "${t(H)}", "小时内(含)"], ["停车", "${t(H)}", "小时至", "${t(H)}", "小时(含)"], ["停车", "${t(H)}", "小时以上"], null, null],
+          [["小型车辆"], ["${m(yuan)}", "元/次"], ["${m(yuan)}", "元/次"], ["${m(yuan)}", "元/次"], ["${m(yuan)}", "元/次"], ["${m(yuan)}", "元/次"]],
+          [["超大型车辆"], ["${m(yuan)}", "元/次"], null, null, ["${m(yuan)}", "元/次"], [""]],
+          [["停车不超过", "${t(m)}", "分钟的免费, 本停车点保管看护时段:"], null, null, null, null, null],
+          [["价格举报电话:"], ["${s(u)}"], null, null, null, null],
+          [["服务监督电话:"], ["${s(u)}"], null, null, null, null],
+        ],
+        VNodeData: [
+          [{style: {"text-align": "center", "font-weight": "bolder"}}, null, null, null, null, null],
+          [{style: {"text-align": "center", "font-weight": "bolder"}}, null, null, null, null, null],
+          [{style: {"text-align": "center", "font-weight": "bolder"}}, null, null, null, null, null],
+          [{style: {"text-align": "center", "font-weight": "bolder"}}, null, null, null, null, null],
+          [{style: {"text-align": "center", "font-weight": "bolder"}}, null, null, null, null, null],
+          [{style: {"text-align": "center", "font-weight": "bolder"}}, null, null, null, null, null],
+          [{style: {"text-align": "left", "font-weight": "bolder"}}, null, null, null, null, null],
+          [{style: {"text-align": "center", "font-weight": "bolder"}}, null, null, null, null, null],
+          [{style: {"text-align": "center", "font-weight": "bolder"}}, null, null, null, null, null],
         ],
       },
       chargeRule: {
         variables: [
-          [null, null, null, null, null, null],
-          [null, "湛价函[2010]208号文和湛价函[2014]68号文", null, null, null, null],
-          [null, [8 * 60 * 60, 24 * 60 * 60], null, null, [0, 8 * 60 * 60], null],
-          [null, [3 * 60 * 60], [3 * 60 * 60, 6 * 60 * 60], [6 * 60 * 60], null, null],
-          [null, 5 * 100, 8 * 100, 10 * 100, 10 * 100, 12 * 100],
-          [null, 60 * 100, null, null, 30 * 100, null],
-          [15 * 60, null, null, null, null, null],
-          [null, "12358", null, null, null, null],
-          [null, "0759-3162699", null, null, null, null],
+          {0: null, 1: null, 2: null, 3: null, 4: null, 5: null},
+          {0: null, 1: ["湛价函[2010]208号文和湛价函[2014]68号文"], 2: null, 3: null, 4: null, 5: null},
+          {0: null, 1: [8 * 60 * 60, 24 * 60 * 60], 2: null, 3: null, 4: [0, 8 * 60 * 60], 5: null},
+          {0: null, 1: [3 * 60 * 60], 2: [3 * 60 * 60, 6 * 60 * 60], 3: [6 * 60 * 60], 4: null, 5: null},
+          {0: null, 1: [5 * 100], 2: [8 * 100], 3: [10 * 100], 4: [10 * 100], 5: [12 * 100]},
+          {0: null, 1: [60 * 100], 2: null, 3: null, 4: [30 * 100], 5: null},
+          {0: [15 * 60], 1: null, 2: null, 3: null, 4: null, 5: null},
+          {0: null, 1: ["12358"], 2: null, 3: null, 4: null, 5: null},
+          {0: null, 1: ["0759-3162699"], 2: null, 3: null, 4: null, 5: null},
         ],
       },
     }
