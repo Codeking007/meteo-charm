@@ -68,6 +68,7 @@ export default Vue.extend({
     },
     handleContextMenuEdit() {
       console.log("handleContextMenuEdit");
+      console.log(this.chargeRule.variables);
       this.$Message.info('Click edit of line' + this.contextLine);
     },
     handleContextMenuDelete() {
@@ -117,12 +118,31 @@ export default Vue.extend({
               let formatMatchArray: RegExpMatchArray | null = typeValue.match(/(?<=\().+?(?=\))/g);
               if (formatMatchArray != null && formatMatchArray.length > 0) {
                 formatMatchArray.forEach((formatValue, formatIndex, formatArray) => {
+                  // fixme 要单独拷贝一个chargeRuleVariablesIndex变量出来到currentChargeRuleVariablesIndex中，要不然input框的input事件就绑定的是++chargeRuleVariablesIndex的索引了。这里利用number数值型是「值传递」的思想，重新拷贝了一份出来，这样v-model绑定的值就不会随着chargeRuleVariablesIndex的递增而改变
+                  let currentChargeRuleVariablesIndex = chargeRuleVariablesIndex;
+                  let VNodeData = {
+                    props: {
+                      value: chargeRuleVariableArray[currentChargeRuleVariablesIndex],
+                      // clearable: true,
+                      // size: "large",
+                      placeholder: "Enter something...",
+                    },
+                    style: {
+                      // marginRight: '5px',
+                      width: "60px",
+                    },
+                    on: {
+                      "input": (e) => {
+                        chargeRuleVariableArray[currentChargeRuleVariablesIndex] = e;
+                      }
+                    }
+                  };
                   switch (typeValue.charAt(0)) {
                       // 字符串，直接显示
                     case 's':
                       tableRenderCells.push(
                           <span>
-                            {chargeRuleVariableArray[chargeRuleVariablesIndex]}
+                            {chargeRuleVariableArray[currentChargeRuleVariablesIndex]}
                           </span>
                       );
                       ++chargeRuleVariablesIndex;
@@ -130,18 +150,14 @@ export default Vue.extend({
                       // 时间（单位：从0点开始有多少秒），render渲染为时间组件
                     case 't':
                       tableRenderCells.push(
-                          <span>
-                            {chargeRuleVariableArray[chargeRuleVariablesIndex]}
-                          </span>
+                          <i-input {...VNodeData} />
                       );
                       ++chargeRuleVariablesIndex;
                       break;
                       // 金额（单位：分）， render渲染为金钱组件
                     case 'm':
                       tableRenderCells.push(
-                          <span>
-                            {chargeRuleVariableArray[chargeRuleVariablesIndex]}
-                          </span>
+                          <i-input {...VNodeData} />
                       );
                       ++chargeRuleVariablesIndex;
                       break;
