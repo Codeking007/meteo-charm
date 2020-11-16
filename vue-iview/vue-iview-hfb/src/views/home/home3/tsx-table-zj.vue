@@ -120,23 +120,6 @@ export default Vue.extend({
                 formatMatchArray.forEach((formatValue, formatIndex, formatArray) => {
                   // fixme 要单独拷贝一个chargeRuleVariablesIndex变量出来到currentChargeRuleVariablesIndex中，要不然input框的input事件就绑定的是++chargeRuleVariablesIndex的索引了。这里利用number数值型是「值传递」的思想，重新拷贝了一份出来，这样v-model绑定的值就不会随着chargeRuleVariablesIndex的递增而改变
                   let currentChargeRuleVariablesIndex = chargeRuleVariablesIndex;
-                  let VNodeData = {
-                    props: {
-                      value: chargeRuleVariableArray[currentChargeRuleVariablesIndex],
-                      // clearable: true,
-                      // size: "large",
-                      placeholder: "Enter something...",
-                    },
-                    style: {
-                      // marginRight: '5px',
-                      width: "60px",
-                    },
-                    on: {
-                      "input": (e) => {
-                        chargeRuleVariableArray[currentChargeRuleVariablesIndex] = e;
-                      }
-                    }
-                  };
                   switch (typeValue.charAt(0)) {
                       // 字符串，直接显示
                     case 's':
@@ -149,15 +132,49 @@ export default Vue.extend({
                       break;
                       // 时间（单位：从0点开始有多少秒），render渲染为时间组件
                     case 't':
+                      let timeVNodeData = {
+                        props: {
+                          value: chargeRuleVariableArray[currentChargeRuleVariablesIndex],
+                          // clearable: true,
+                          // size: "large",
+                          placeholder: "Enter something...",
+                        },
+                        style: {
+                          // marginRight: '5px',
+                          width: "60px",
+                        },
+                        on: {
+                          "input": (e) => {
+                            chargeRuleVariableArray[currentChargeRuleVariablesIndex] = e;
+                          }
+                        }
+                      };
                       tableRenderCells.push(
-                          <i-input {...VNodeData} />
+                          <i-input {...timeVNodeData} />
                       );
                       ++chargeRuleVariablesIndex;
                       break;
                       // 金额（单位：分）， render渲染为金钱组件
                     case 'm':
+                      let moneyVNodeData = {
+                        props: {
+                          value: chargeRuleVariableArray[currentChargeRuleVariablesIndex]/100.0,
+                          // clearable: true,
+                          // size: "large",
+                          placeholder: "Enter something...",
+                        },
+                        style: {
+                          // marginRight: '5px',
+                          width: "60px",
+                        },
+                        on: {
+                          "input": (e) => {
+                            chargeRuleVariableArray[currentChargeRuleVariablesIndex] = e*100.0;
+                          }
+                        }
+                      };
                       tableRenderCells.push(
-                          <i-input {...VNodeData} />
+                          <i-input {...moneyVNodeData} />
                       );
                       ++chargeRuleVariablesIndex;
                       break;
