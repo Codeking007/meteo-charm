@@ -61,7 +61,7 @@ export default Vue.extend({
         regex: [
           [["机动车停车场(道路)收费明码标价"], null, null, null, null, null],
           [["收费依据"], ["${s(u)}"], null, null, null, null],
-          [["车型"], ["白天时段: ", "${t(dd:HH)}", " - ", "${t(dd:HH)}"], null, null, ["夜间时段: ", "${t(dd:HH)}", " - ", "${t(dd:HH)}"], ["24小时内（含）最高限价"]],
+          [["车型"], ["白天时段: ", "${TimePicker(dd:HH)}", " - ", "${TimePicker(dd:HH)}"], null, null, ["夜间时段: ", "${TimePicker(dd:HH)}", " - ", "${TimePicker(dd:HH)}"], ["24小时内（含）最高限价"]],
           [null, ["停车 ", "${t(H)}", " 小时内(含)"], ["停车 ", "${t(H)}", " 小时至 ", "${t(H)}", " 小时(含)"], ["停车 ", "${t(H)}", " 小时以上"], null, null],
           [["小型车辆"], ["${m(yuan)}", "元/次"], ["${m(yuan)}", "元/次"], ["${m(yuan)}", "元/次"], ["${m(yuan)}", "元/次"], ["${m(yuan)}", "元/次"]],
           [["超大型车辆"], ["${m(yuan)}", "元/次"], null, null, ["${m(yuan)}", "元/次"], [""]],

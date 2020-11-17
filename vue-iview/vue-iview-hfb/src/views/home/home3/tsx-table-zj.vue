@@ -120,7 +120,7 @@ export default Vue.extend({
                 formatMatchArray.forEach((formatValue, formatIndex, formatArray) => {
                   // fixme 要单独拷贝一个chargeRuleVariablesIndex变量出来到currentChargeRuleVariablesIndex中，要不然input框的input事件就绑定的是++chargeRuleVariablesIndex的索引了。这里利用number数值型是「值传递」的思想，重新拷贝了一份出来，这样v-model绑定的值就不会随着chargeRuleVariablesIndex的递增而改变
                   let currentChargeRuleVariablesIndex = chargeRuleVariablesIndex;
-                  switch (typeValue.charAt(0)) {
+                  switch (typeValue.split("(")[0]) {
                       // 字符串，直接显示
                     case 's':
                       tableRenderCells.push(
@@ -134,7 +134,7 @@ export default Vue.extend({
                     case 't':
                       let timeVNodeData = {
                         props: {
-                          value: chargeRuleVariableArray[currentChargeRuleVariablesIndex],
+                          value: Math.floor(chargeRuleVariableArray[currentChargeRuleVariablesIndex] / 3600),
                           // clearable: true,
                           // size: "large",
                           placeholder: "Enter something...",
@@ -145,7 +145,7 @@ export default Vue.extend({
                         },
                         on: {
                           "input": (e) => {
-                            chargeRuleVariableArray[currentChargeRuleVariablesIndex] = e;
+                            chargeRuleVariableArray[currentChargeRuleVariablesIndex] = e * 3600;
                           }
                         }
                       };
@@ -158,7 +158,7 @@ export default Vue.extend({
                     case 'm':
                       let moneyVNodeData = {
                         props: {
-                          value: chargeRuleVariableArray[currentChargeRuleVariablesIndex]/100.0,
+                          value: chargeRuleVariableArray[currentChargeRuleVariablesIndex] / 100.0,
                           // clearable: true,
                           // size: "large",
                           placeholder: "Enter something...",
@@ -169,12 +169,45 @@ export default Vue.extend({
                         },
                         on: {
                           "input": (e) => {
-                            chargeRuleVariableArray[currentChargeRuleVariablesIndex] = e*100.0;
+                            chargeRuleVariableArray[currentChargeRuleVariablesIndex] = e * 100.0;
                           }
                         }
                       };
                       tableRenderCells.push(
                           <i-input {...moneyVNodeData} />
+                      );
+                      ++chargeRuleVariablesIndex;
+                      break;
+                    case 'TimePicker':
+                      let timePickerVNodeData = {
+                        props: {
+                          value: new Date(chargeRuleVariableArray[currentChargeRuleVariablesIndex] * 1000 + new Date().getTimezoneOffset() * 60 * 1000),
+                          // clearable: true,
+                          // size: "large",
+                          placeholder: "Select time",
+                          type: "time",
+                          format: "HH:mm",
+                        },
+                        style: {
+                          width: "80px",
+                        },
+                        on: {
+                          "input": (e) => {
+                            console.log(e);
+                            if (e != null && e !== "") {
+                              let split = e.split(":");
+                              if (split.length == 2) {
+                                let hour: number = Number(split[0]);
+                                let minute: number = Number(split[1]);
+                                console.log(hour * 3600 + minute * 60)
+                                chargeRuleVariableArray[currentChargeRuleVariablesIndex] = hour * 3600 + minute * 60;
+                              }
+                            }
+                          },
+                        }
+                      };
+                      tableRenderCells.push(
+                          <time-picker {...timePickerVNodeData} />
                       );
                       ++chargeRuleVariablesIndex;
                       break;
