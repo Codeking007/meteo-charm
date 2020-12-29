@@ -105,9 +105,9 @@
         },
         computed: {},
         mounted() {
-            console.profile("this.init()性能分析");
+            // console.profile("this.init()性能分析");
             this.init();
-            console.profileEnd();
+            // console.profileEnd();
         },
         methods: {
             init() {

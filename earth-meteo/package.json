@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "earth-with-d3-no-webgl-serve": "vue-cli-service serve --open",
-    "earth-with-d3-no-webgl-build": "vue-cli-service build"
+    "earth-meteo-serve": "vue-cli-service serve --open",
+    "earth-meteo-build": "vue-cli-service build"
   },
   "dependencies": {
     "d3": "^5.9.2",
