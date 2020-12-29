@@ -1,1 +1,0 @@
-fixme: 每帧画的是线，gl.drawArrays(gl.LINES, 0, n)
